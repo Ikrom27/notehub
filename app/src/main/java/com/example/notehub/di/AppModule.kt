@@ -1,6 +1,7 @@
 package com.example.notehub.di
 
 import com.example.notehub.data.data_source.GoogleDataSource
+import com.example.notehub.data.data_source.LocalDataSource
 import com.example.notehub.data.repository.MainRepository
 import dagger.Module
 import dagger.Provides
@@ -14,10 +15,15 @@ class AppModule {
     @Provides
     @Singleton
     fun provideAccountRepository(
-        googleDataSource: GoogleDataSource
-    ) = MainRepository(googleDataSource)
+        googleDataSource: GoogleDataSource,
+        localDataSource: LocalDataSource
+    ) = MainRepository(googleDataSource, localDataSource)
 
     @Provides
     @Singleton
     fun provideGoogleDataSource() = GoogleDataSource()
+
+    @Provides
+    @Singleton
+    fun provideLocalDataSource() = LocalDataSource()
 }
