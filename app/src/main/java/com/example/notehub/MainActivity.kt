@@ -49,15 +49,10 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun generateDirectories(){
-        createDirectory(getAppName())
-        createDirectory(getAppName() + "/" + Strings.FOLDER_FAVORITE)
-        createDirectory(getAppName() + "/" + Strings.FOLDER_TEMPLATE)
-        createDirectory(getAppName() + "/" + Strings.FOLDER_TRASH)
-    }
-
-    private fun getAppName(): String {
-        val appInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)
-        return packageManager.getApplicationLabel(appInfo).toString()
+        createDirectory(Strings.FOLDER_MAIN)
+        createDirectory(Strings.FOLDER_MAIN + "/" + Strings.FOLDER_FAVORITE)
+        createDirectory(Strings.FOLDER_MAIN + "/" + Strings.FOLDER_TEMPLATE)
+        createDirectory(Strings.FOLDER_MAIN + "/" + Strings.FOLDER_TRASH)
     }
 
     companion object {
