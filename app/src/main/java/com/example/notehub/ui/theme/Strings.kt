@@ -6,3 +6,5 @@ object Strings {
     const val FOLDER_TEMPLATE = ".Template"
     const val FOLDER_TRASH = ".Trash"
 }
+
+const val YOUR_FOLDER = "Your folders"

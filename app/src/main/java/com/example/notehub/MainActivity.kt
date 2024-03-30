@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import com.example.notehub.ui.screens.MainScreen
 import com.example.notehub.ui.screens.SettingsScreen
 import com.example.notehub.ui.theme.NoteHubTheme
 import com.example.notehub.ui.theme.Strings
@@ -27,7 +28,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    SettingsScreen()
+                    MainScreen()
                 }
             }
         }
