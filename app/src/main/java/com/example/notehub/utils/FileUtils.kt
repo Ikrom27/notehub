@@ -13,19 +13,19 @@ object FileUtils {
      * generate default folders: Main, Favorite, Template, Trash
      */
     fun generateDirectories(){
-        createDirectory(Strings.FOLDER_MAIN)
-        createDirectory(Strings.FOLDER_MAIN + "/" + Strings.FOLDER_FAVORITE)
-        createDirectory(Strings.FOLDER_MAIN + "/" + Strings.FOLDER_TEMPLATE)
-        createDirectory(Strings.FOLDER_MAIN + "/" + Strings.FOLDER_TRASH)
+        createDirectory(ROOT_PATH, "")
+        createDirectory(ROOT_PATH, Strings.FOLDER_FAVORITE)
+        createDirectory(ROOT_PATH, Strings.FOLDER_TEMPLATE)
+        createDirectory(ROOT_PATH, Strings.FOLDER_TRASH)
     }
 
     /**
      * creates directory
      * @param: directory name, which will be created
      */
-    private fun createDirectory(child: String) {
+    fun createDirectory(parent: String = ROOT_PATH, child: String) {
         val documentsDirectory = File(
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS),
+            parent,
             child
         )
         if (!documentsDirectory.exists()) {

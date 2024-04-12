@@ -9,6 +9,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -17,16 +20,26 @@ import com.example.notehub.constants.FILE_ITEMS_BETWEEN_PADDING
 import com.example.notehub.constants.MAIN_HORIZONTAL_PADDING
 import com.example.notehub.constants.TITLE_SIZE
 import com.example.notehub.constants.TITLE_WEIGHT
+import com.example.notehub.ui.components.AddIcon
+import com.example.notehub.ui.components.CreateNewFolderDialog
 import com.example.notehub.ui.components.FolderItem
 import com.example.notehub.ui.theme.YOUR_FOLDER
+import com.example.notehub.utils.FileUtils
 import com.example.notehub.viewmodels.MainViewModel
 
 @Composable
 fun MainScreen(
     viewModel: MainViewModel = hiltViewModel()
 ) {
+
+    var openAlertDialog by remember { mutableStateOf(false) }
+    var currentPath by remember { mutableStateOf(FileUtils.ROOT_PATH) }
+
+    viewModel.updateFilesList(currentPath)
+
     val defaultDirectories by viewModel.defaultFolders.collectAsState()
     val directories by viewModel.fileList.collectAsState()
+
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(FILE_ITEMS_BETWEEN_PADDING),
         modifier = Modifier.padding(horizontal = MAIN_HORIZONTAL_PADDING)
@@ -50,11 +63,26 @@ fun MainScreen(
         }
         items(items = directories) {
             FolderItem(
-                title = it.name.substring(1),
+                title = it.name,
                 onClick = {},
                 onLongClick = {},
                 counter = 0
             )
         }
+        item{
+            AddIcon(onClick = {
+                openAlertDialog = true
+            })
+        }
     }
+    if (openAlertDialog) {
+        CreateNewFolderDialog(
+            onDismissRequest = {openAlertDialog = false},
+            confirmButton = {
+                FileUtils.createDirectory(currentPath, it)
+                viewModel.updateFilesList()
+            }
+        )
+    }
+
 }

@@ -2,6 +2,7 @@ package com.example.notehub.data.data_source
 
 import android.os.Environment
 import com.example.notehub.ui.theme.Strings
+import com.example.notehub.utils.FileUtils
 import java.io.File
 
 class LocalDataSource {
@@ -35,6 +36,6 @@ class LocalDataSource {
     }
 
     companion object {
-        val ROOT_PATH = "${Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)}/${Strings.FOLDER_MAIN}"
+        val ROOT_PATH = FileUtils.ROOT_PATH
     }
 }

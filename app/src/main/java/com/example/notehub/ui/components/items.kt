@@ -3,11 +3,15 @@ package com.example.notehub.ui.components
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -20,10 +24,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.example.notehub.constants.ADD_ICON_TOP_PADDING
 import com.example.notehub.constants.ENTER_ARRAY
+import com.example.notehub.constants.FILE_ITEMS_BETWEEN_PADDING
 import com.example.notehub.constants.ICON_SMALL
 import com.example.notehub.constants.FILE_ITEM_HEIGHT
 import com.example.notehub.constants.FILE_ITEM_RADIUS
+import com.example.notehub.constants.ICON_MEDIUM
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -70,6 +77,23 @@ fun FolderItem(
                 tint = MaterialTheme.colorScheme.primary,
                 contentDescription = null,
                 modifier = Modifier.fillMaxSize())
+        }
+    }
+}
+
+@Composable
+fun AddIcon(onClick: () -> Unit){
+    Box(
+        modifier = Modifier.fillMaxWidth().wrapContentHeight().padding(top = ADD_ICON_TOP_PADDING - FILE_ITEMS_BETWEEN_PADDING),
+        contentAlignment = Alignment.Center
+    ) {
+        IconButton(
+            modifier = Modifier
+                .size(ICON_MEDIUM)
+                .background(color = MaterialTheme.colorScheme.primary, shape = CircleShape),
+            onClick = { onClick() }
+        ) {
+            /* TODO: add icon */
         }
     }
 }

@@ -14,6 +14,7 @@ import com.example.notehub.ui.screens.MainScreen
 import com.example.notehub.ui.screens.SettingsScreen
 import com.example.notehub.ui.theme.NoteHubTheme
 import com.example.notehub.ui.theme.Strings
+import com.example.notehub.utils.FileUtils
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 
@@ -32,28 +33,7 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-        generateDirectories()
-    }
-
-    private fun createDirectory(child: String) {
-        val documentsDirectory = File(
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS),
-            child
-        )
-        if (!documentsDirectory.exists()) {
-            if (documentsDirectory.mkdirs()) {
-                Log.d(TAG, "Directory created at ${documentsDirectory.absolutePath}")
-            } else {
-                Log.e(TAG, "Failed to create directory")
-            }
-        }
-    }
-
-    private fun generateDirectories(){
-        createDirectory(Strings.FOLDER_MAIN)
-        createDirectory(Strings.FOLDER_MAIN + "/" + Strings.FOLDER_FAVORITE)
-        createDirectory(Strings.FOLDER_MAIN + "/" + Strings.FOLDER_TEMPLATE)
-        createDirectory(Strings.FOLDER_MAIN + "/" + Strings.FOLDER_TRASH)
+        FileUtils.generateDirectories()
     }
 
     companion object {
