@@ -25,6 +25,7 @@ import com.example.notehub.ui.components.CreateNewFolderDialog
 import com.example.notehub.ui.components.FolderItem
 import com.example.notehub.ui.theme.YOUR_FOLDER
 import com.example.notehub.utils.FileUtils
+import com.example.notehub.utils.addPath
 import com.example.notehub.viewmodels.MainViewModel
 
 @Composable
@@ -64,7 +65,9 @@ fun MainScreen(
         items(items = directories) {
             FolderItem(
                 title = it.name,
-                onClick = {},
+                onClick = {
+
+                },
                 onLongClick = {},
                 counter = 0
             )
