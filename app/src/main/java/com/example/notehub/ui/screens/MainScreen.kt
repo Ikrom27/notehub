@@ -25,7 +25,6 @@ import com.example.notehub.ui.components.CreateNewFolderDialog
 import com.example.notehub.ui.components.FolderItem
 import com.example.notehub.ui.theme.YOUR_FOLDER
 import com.example.notehub.utils.FileUtils
-import com.example.notehub.utils.addPath
 import com.example.notehub.viewmodels.MainViewModel
 
 @Composable
@@ -33,7 +32,7 @@ fun MainScreen(
     viewModel: MainViewModel = hiltViewModel()
 ) {
 
-    var openAlertDialog by remember { mutableStateOf(false) }
+    var showCreateFolderDialog by remember { mutableStateOf(false) }
     var currentPath by remember { mutableStateOf(FileUtils.ROOT_PATH) }
 
     viewModel.updateFilesList(currentPath)
@@ -74,13 +73,13 @@ fun MainScreen(
         }
         item{
             AddIcon(onClick = {
-                openAlertDialog = true
+                showCreateFolderDialog = true
             })
         }
     }
-    if (openAlertDialog) {
+    if (showCreateFolderDialog) {
         CreateNewFolderDialog(
-            onDismissRequest = {openAlertDialog = false},
+            onDismissRequest = {showCreateFolderDialog = false},
             confirmButton = {
                 FileUtils.createDirectory(currentPath, it)
                 viewModel.updateFilesList()
