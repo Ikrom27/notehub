@@ -1,8 +1,6 @@
 package com.example.notehub.ui.components
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,26 +25,20 @@ import androidx.compose.ui.unit.sp
 import com.example.notehub.constants.ADD_ICON_TOP_PADDING
 import com.example.notehub.constants.ENTER_ARRAY
 import com.example.notehub.constants.FILE_ITEMS_BETWEEN_PADDING
-import com.example.notehub.constants.ICON_SMALL
 import com.example.notehub.constants.FILE_ITEM_HEIGHT
 import com.example.notehub.constants.FILE_ITEM_RADIUS
 import com.example.notehub.constants.ICON_MEDIUM
 
-@OptIn(ExperimentalFoundationApi::class)
+
 @Composable
 fun FolderItem(
     title: String,
-    onClick: () -> Unit,
-    onLongClick: () -> Unit,
-    counter: Int
+    counter: Int,
+    modifier: Modifier = Modifier
 ){
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .combinedClickable(
-                onClick = { onClick() },
-                onLongClick = { onLongClick() }
-            )
+        modifier = modifier
             .fillMaxWidth()
             .height(FILE_ITEM_HEIGHT)
             .clip(
@@ -68,16 +60,11 @@ fun FolderItem(
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.fillMaxWidth()
         )
-        IconButton(
-            onClick = { onClick() },
-            modifier = Modifier.size(ICON_SMALL)
-        ) {
-            Icon(
-                painter = painterResource(id = ENTER_ARRAY),
-                tint = MaterialTheme.colorScheme.primary,
-                contentDescription = null,
-                modifier = Modifier.fillMaxSize())
-        }
+        Icon(
+            painter = painterResource(id = ENTER_ARRAY),
+            tint = MaterialTheme.colorScheme.primary,
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize())
     }
 }
 
