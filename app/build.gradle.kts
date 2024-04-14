@@ -53,12 +53,17 @@ android {
 }
 
 dependencies {
+    implementation("androidx.browser:browser:1.8.0")
     //Dagger hilt
     kapt("com.google.dagger:hilt-android-compiler:2.47")
     implementation("com.google.dagger:hilt-android:2.47")
     implementation("com.google.dagger:dagger:2.47")
     kapt("com.google.dagger:dagger-compiler:2.47")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+    //google auth
+    implementation("androidx.credentials:credentials:1.2.2")
+    implementation("androidx.credentials:credentials-play-services-auth:1.2.2")
+    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.0")
     //Other
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")

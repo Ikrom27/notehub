@@ -12,3 +12,5 @@ const val LABEL_RENAME = "Rename"
 
 //TEXT
 const val TEXT_INCORRECT_FOLDER_NAME = "Incorrect folder name!"
+const val SWITCH_THEME = "Theme"
+const val AUTHORS = "Authors:"
