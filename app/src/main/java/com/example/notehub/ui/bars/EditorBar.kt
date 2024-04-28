@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.notehub.R
+import com.example.notehub.constants.MAIN_HORIZONTAL_PADDING
 import com.example.notehub.constants.NOTE_TITLE_SIZE
 import com.example.notehub.constants.TOP_BAR_HEIGHT
 
@@ -37,6 +39,7 @@ fun EditorBar(
             .fillMaxWidth()
             .height(TOP_BAR_HEIGHT)
             .background(MaterialTheme.colorScheme.background)
+            .padding(horizontal = MAIN_HORIZONTAL_PADDING)
     ) {
         Text(
             text = title,
@@ -67,7 +70,8 @@ fun EditorBar(
                 onClick = { }
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.example),
+                    painter = painterResource(id = R.drawable.ic_more),
+                    tint = MaterialTheme.colorScheme.primary,
                     contentDescription = null,
                     modifier = Modifier.size(24.dp)
                 )
