@@ -54,7 +54,7 @@ android {
 
 dependencies {
     //Markdown
-    implementation("com.github.jeziellago:compose-markdown:0.4.1")
+    implementation("com.colintheshots:twain:0.3.2")
     //Dagger hilt
     kapt("com.google.dagger:hilt-android-compiler:2.47")
     implementation("com.google.dagger:hilt-android:2.47")

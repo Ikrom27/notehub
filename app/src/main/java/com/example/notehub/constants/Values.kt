@@ -9,6 +9,7 @@ val ICON_MEDIUM = 40.dp
 
 //Dimens
 val FILE_ITEM_HEIGHT = 46.dp
+val TOP_BAR_HEIGHT = 56.dp
 
 //Paddings
 val MAIN_HORIZONTAL_PADDING = 6.dp
@@ -20,6 +21,7 @@ val FILE_ITEM_RADIUS = 10.dp
 
 //Text size
 val TITLE_SIZE = 20.sp
+val NOTE_TITLE_SIZE = 26.sp
 
 //Text weight
 const val TITLE_WEIGHT = 600
