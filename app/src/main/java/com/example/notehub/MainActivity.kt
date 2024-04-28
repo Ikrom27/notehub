@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.example.notehub.ui.screens.EditorScreen
 import com.example.notehub.ui.theme.NoteHubTheme
 import com.example.notehub.utils.FileUtils
@@ -26,6 +28,11 @@ class MainActivity : ComponentActivity() {
                 val intent = Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
                 startActivity(intent)
             }
+        }
+        ViewCompat.setOnApplyWindowInsetsListener(window.decorView.rootView) { _, insets ->
+            val imeVisible = insets.isVisible(WindowInsetsCompat.Type.ime())
+            val imeHeight = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
+            insets
         }
         setContent {
             NoteHubTheme {
