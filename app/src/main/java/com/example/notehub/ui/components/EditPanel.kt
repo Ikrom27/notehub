@@ -53,13 +53,11 @@ fun setBold(textFieldValue: TextFieldValue): String{
     val text = textFieldValue.text
     var start = textFieldValue.selection.start
     var end = textFieldValue.selection.end
-    Log.d("SET BOLD", "index ${textFieldValue.selection.start} ${textFieldValue.selection.end}")
     while (text[start].isLetter() && start >= 0){
         start--
     }
     while (text[end].isLetter() && end < text.length){
         end++
     }
-    Log.d("SET BOLD", "end ${start} ${end} ${text.substring(start, end)}")
     return text.substring(0, start+1) + "**" + text.substring(start+1, end) + "**" + text.substring(end, text.length)
 }

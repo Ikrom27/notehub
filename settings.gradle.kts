@@ -16,4 +16,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "NoteHub"
 include(":app")
- 
+include(":twain")
