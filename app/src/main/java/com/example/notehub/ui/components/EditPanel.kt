@@ -15,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import com.example.notehub.R
@@ -27,7 +28,8 @@ import com.example.notehub.utils.MarkdownUtils
 
 data class EditPanelButton(
     val icon: Int,
-    val onClick: (TextFieldValue) -> String
+    val onClick: (TextFieldValue, Boolean) -> String,
+    val selected: (TextFieldValue) -> Boolean
 )
 
 @Composable
@@ -49,12 +51,29 @@ fun EditPanel(
             verticalAlignment = Alignment.CenterVertically
         ) {
             items(items = EDIT_PANEL_BUTTONS){ button ->
+                val selected = button.selected(textFieldValue)
                 IconButton(
-                    onClick = { onTextChange(button.onClick(textFieldValue)) },
-                    modifier = Modifier.height(ICON_MEDIUM_PLUS)
+                    onClick = { onTextChange(button.onClick(textFieldValue, selected)) },
+                    modifier = Modifier
+                        .height(ICON_MEDIUM_PLUS)
+                        .background(color = if(selected) MaterialTheme.colorScheme.surfaceVariant else Color.Transparent)
                 ) {
                     Icon(painter = painterResource(
                         id = button.icon),
+                        tint = MaterialTheme.colorScheme.primary,
+                        contentDescription = null,
+                        modifier = Modifier.height(ICON_MEDIUM)
+                    )
+                }
+            }
+            item {
+                IconButton(
+                    onClick = { },
+                    modifier = Modifier
+                        .height(ICON_MEDIUM_PLUS)
+                ) {
+                    Icon(painter = painterResource(
+                        id = R.drawable.ic_edit),
                         tint = MaterialTheme.colorScheme.primary,
                         contentDescription = null,
                         modifier = Modifier.height(ICON_MEDIUM)
@@ -68,18 +87,23 @@ fun EditPanel(
 val EDIT_PANEL_BUTTONS = listOf(
     EditPanelButton(
         icon = R.drawable.ic_italic,
-        onClick = {MarkdownUtils.makeItalic(it)}
+        onClick = { value, selected -> MarkdownUtils.toggleItalic(value, selected) },
+        selected = { MarkdownUtils.isItalic(it) }
     ),
     EditPanelButton(
         icon = R.drawable.ic_bold,
-        onClick = {MarkdownUtils.makeBold(it)}
+        onClick = { value, selected -> MarkdownUtils.toggleBold(value, selected) },
+        selected = { MarkdownUtils.isBold(it) }
     ),
     EditPanelButton(
         icon = R.drawable.ic_strikethrough,
-        onClick = {MarkdownUtils.makeStrikethrough(it)}
+        onClick = { value, selected -> MarkdownUtils.toggleStrikethrough(value, selected) },
+        selected = { MarkdownUtils.isStrikethrough(it) }
     ),
     EditPanelButton(
         icon = R.drawable.ic_code,
-        onClick = {MarkdownUtils.makeCode(it)}
+        onClick = { value, selected -> MarkdownUtils.toggleCode(value, selected) },
+        selected = { MarkdownUtils.isCode(it) }
     )
 )
+
