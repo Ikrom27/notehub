@@ -18,6 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import com.example.notehub.R
 import com.example.notehub.constants.TOP_BAR_HEIGHT
+import com.example.notehub.utils.MarkdownUtils
 
 @Composable
 fun EditPanel(
@@ -37,7 +38,7 @@ fun EditPanel(
         LazyRow {
             item {
                 IconButton(onClick = {
-                    onTextChange(setBold(textFieldValue))
+                    onTextChange(MarkdownUtils.setBold(textFieldValue))
                 }) {
                     Icon(painter = painterResource(
                         id = R.drawable.ic_bold),
@@ -47,17 +48,4 @@ fun EditPanel(
             }
         }
     }
-}
-
-fun setBold(textFieldValue: TextFieldValue): String{
-    val text = textFieldValue.text
-    var start = textFieldValue.selection.start
-    var end = textFieldValue.selection.end
-    while (text[start].isLetter() && start >= 0){
-        start--
-    }
-    while (text[end].isLetter() && end < text.length){
-        end++
-    }
-    return text.substring(0, start+1) + "**" + text.substring(start+1, end) + "**" + text.substring(end, text.length)
 }

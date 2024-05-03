@@ -35,7 +35,7 @@ import java.io.File
 fun EditorScreen() {
     val file = File(FileUtils.ROOT_PATH.addPath("README.md"))
     var isEditableMode by remember { mutableStateOf(false) }
-    val textFieldValue = rememberSaveable(stateSaver = TextFieldValue.Saver) {
+    var textFieldValue by remember {
         mutableStateOf(TextFieldValue(file.readText()))
     }
 
@@ -58,18 +58,19 @@ fun EditorScreen() {
                     .padding(top = it.calculateTopPadding())
             ) {
                 item {
-                    DisplayMarkDown(isEditableMode, textFieldValue.value.text) {
-                        textFieldValue.value = it.copy()
-                        Log.d("Editor", "Selection ${textFieldValue.value.selection.start}")
+                    DisplayMarkDown(isEditableMode, textFieldValue) {
+                        Log.d("Editor", "Selection ${textFieldValue.selection.start} ${textFieldValue.selection.end}")
+                        textFieldValue = it.copy()
                     }
                 }
             }
         }
         EditPanel(
             modifier = Modifier.align(Alignment.BottomCenter),
-            textFieldValue.value
+            textFieldValue
         ) {
-            textFieldValue.value = textFieldValue.value.copy(it)
+            textFieldValue = textFieldValue.copy(it)
+            Log.d("EditPanel", "Selection ${textFieldValue.selection.start} ${textFieldValue.selection.end}")
         }
     }
 }
@@ -77,7 +78,7 @@ fun EditorScreen() {
 @Composable
 fun DisplayMarkDown(
     isEditableMode: Boolean,
-    text: String,
+    text: TextFieldValue,
     onTextChange: (TextFieldValue) -> Unit
 ){
     var textColor = MaterialTheme.colorScheme.onBackground
@@ -97,7 +98,7 @@ fun DisplayMarkDown(
         )
     } else {
         MarkdownText(
-            markdown = text,
+            markdown = text.text,
             color = textColor,
             fontSize = 18.sp,
             modifier = Modifier
