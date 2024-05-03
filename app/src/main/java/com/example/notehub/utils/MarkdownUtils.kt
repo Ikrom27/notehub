@@ -4,10 +4,35 @@ import androidx.compose.ui.text.input.TextFieldValue
 
 object MarkdownUtils {
     private const val TAG = "MarkdownUtils"
+    private const val ITALIC_MARKER = "_"
+    private const val BOLD_MARKER = "**"
+    private const val STRIKETHROUGH_MARKER = "~~"
+    private const val UNDERLINE_MARKER = "<sub>"
+    private const val CODE_MARKER = "`"
 
-    fun setBold(textFieldValue: TextFieldValue): String{
+    fun makeItalic(textFieldValue: TextFieldValue): String {
+        return formatTextWith(ITALIC_MARKER, textFieldValue)
+    }
+
+    fun makeBold(textFieldValue: TextFieldValue): String{
+        return formatTextWith(BOLD_MARKER, textFieldValue)
+    }
+
+    fun makeStrikethrough(textFieldValue: TextFieldValue): String {
+        return formatTextWith(STRIKETHROUGH_MARKER, textFieldValue)
+    }
+
+    fun makeCode(textFieldValue: TextFieldValue): String {
+        return formatTextWith(CODE_MARKER, textFieldValue)
+    }
+
+    fun makeUnderline(textFieldValue: TextFieldValue): String {
+        return formatTextWith(UNDERLINE_MARKER, textFieldValue)
+    }
+
+    private fun formatTextWith(symbol: String, textFieldValue: TextFieldValue): String {
         val (start, end) = getSelectedIndices(textFieldValue)
-        return circleTextWith("**", textFieldValue.text, start, end)
+        return markText(symbol, textFieldValue.text, start, end)
     }
 
     private fun getSelectedIndices(textFieldValue: TextFieldValue): Pair<Int, Int>{
@@ -37,7 +62,7 @@ object MarkdownUtils {
         return end
     }
 
-    private fun circleTextWith(symbol: String, text: String, start: Int, end: Int): String{
-        return text.substring(0, start) + "**" + text.substring(start, end) + "**" + text.substring(end, text.length)
+    private fun markText(symbol: String, text: String, start: Int, end: Int): String{
+        return text.substring(0, start) + symbol + text.substring(start, end) + symbol + text.substring(end, text.length)
     }
 }
