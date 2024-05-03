@@ -69,7 +69,7 @@ fun EditorScreen() {
             modifier = Modifier.align(Alignment.BottomCenter),
             textFieldValue
         ) {
-            textFieldValue = textFieldValue.copy(it)
+            textFieldValue = it.copy()
             Log.d("EditPanel", "Selection ${textFieldValue.selection.start} ${textFieldValue.selection.end}")
         }
     }
@@ -78,13 +78,13 @@ fun EditorScreen() {
 @Composable
 fun DisplayMarkDown(
     isEditableMode: Boolean,
-    text: TextFieldValue,
+    value: TextFieldValue,
     onTextChange: (TextFieldValue) -> Unit
 ){
     var textColor = MaterialTheme.colorScheme.onBackground
     if (isEditableMode) {
         MarkdownEditor(
-            value = text,
+            value = value,
             onValueChange = {value ->
                 onTextChange(value)
             },
@@ -98,7 +98,7 @@ fun DisplayMarkDown(
         )
     } else {
         MarkdownText(
-            markdown = text.text,
+            markdown = value.text,
             color = textColor,
             fontSize = 18.sp,
             modifier = Modifier

@@ -115,6 +115,7 @@ fun MarkdownEditor(
         if (maxLines != null) editText.maxLines = maxLines
         if (value.text != editText.text.toString()) {
             editText.setText(value.text)
+            editText.setSelection(value.selection.start)
         }
         updateCounterRemaining(
             value.text.length,
@@ -255,7 +256,6 @@ private fun createEditor(
     onLinkClick: (String, String, TextRange) -> Unit
 ): EditText {
     val markwon = createMarkdownRender(context)
-    val textRange = MutableLiveData<TextRange>()
     val editor = MarkwonEditor.builder(markwon)
         .useEditHandler(EmphasisEditHandler())
         .useEditHandler(StrongEmphasisEditHandler())
@@ -273,6 +273,8 @@ private fun createEditor(
         .build()
     return imageKeyboardEditText(context).apply {
         requestFocus()
+        setSelection(value.selection.start, value.selection.end)
+        val select = value.selection.start
         movementMethod = LinksPlusArrowKeysMovementMethod.instance
         setBackgroundResource(android.R.color.transparent) // removes EditText underbar
         hint?.let { setHint(it) }
@@ -292,7 +294,6 @@ private fun createEditor(
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(editable: Editable?) {
-                textRange.postValue(TextRange(this@apply.selectionStart, this@apply.selectionEnd))
                 editable?.let { s ->
                     if (charLimit != null && s.length > charLimit) {
                         s.setSpan(

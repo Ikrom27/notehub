@@ -28,7 +28,7 @@ import com.example.notehub.utils.MarkdownUtils
 
 data class EditPanelButton(
     val icon: Int,
-    val onClick: (TextFieldValue, Boolean) -> String,
+    val onClick: (TextFieldValue, Boolean) -> TextFieldValue,
     val selected: (TextFieldValue) -> Boolean
 )
 
@@ -36,7 +36,7 @@ data class EditPanelButton(
 fun EditPanel(
     modifier: Modifier = Modifier,
     textFieldValue: TextFieldValue,
-    onTextChange: (String) -> Unit
+    onTextChange: (TextFieldValue) -> Unit
 ) {
     Column(
         modifier = modifier
