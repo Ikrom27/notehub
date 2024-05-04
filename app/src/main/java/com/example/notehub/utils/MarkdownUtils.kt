@@ -1,5 +1,6 @@
 package com.example.notehub.utils
 
+import android.util.Log
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 
@@ -111,6 +112,25 @@ object MarkdownUtils {
         return formatTextWith(CODE_MARKER, value)
     }
 
+    fun makeNumbered(value: TextFieldValue): TextFieldValue {
+        val text = value.text
+        val currentStart = getLineStartsIndex(value, '\n').first
+        var prevStart = getLineStartsIndex(value.copy(selection = TextRange(currentStart-2)), '\n').first
+        var spaceCount = 0
+        var lastNumber = 0
+        while (!text[prevStart].isDigit()){
+            spaceCount++
+            prevStart++
+        }
+        while (text[prevStart].isDigit()) {
+            lastNumber = lastNumber*10 + text[prevStart].digitToInt()
+            prevStart++
+        }
+        val newText = text.substring(0, currentStart) + " ".repeat(spaceCount) + (lastNumber+1) + ". " + text.substring(currentStart, text.length)
+        val newSelection = TextRange(value.selection.start+lastNumber.toString().length)
+        return TextFieldValue(newText, newSelection)
+    }
+
     /**
      * Removes bold formatting from the selected text within the provided TextFieldValue.
      *
@@ -159,7 +179,7 @@ object MarkdownUtils {
      */
     fun isBold(value: TextFieldValue): Boolean {
         val (start, end) = getSelectedIndices(value)
-        return isMarked(value.text.substring(start, end), BOLD_MARKER)
+        return isWordMarked(value.text.substring(start, end), BOLD_MARKER)
     }
 
     /**
@@ -170,7 +190,7 @@ object MarkdownUtils {
      */
     fun isItalic(value: TextFieldValue): Boolean {
         val (start, end) = getSelectedIndices(value)
-        return isMarked(value.text.substring(start, end), ITALIC_MARKER)
+        return isWordMarked(value.text.substring(start, end), ITALIC_MARKER)
     }
 
     /**
@@ -181,7 +201,7 @@ object MarkdownUtils {
      */
     fun isStrikethrough(value: TextFieldValue): Boolean {
         val (start, end) = getSelectedIndices(value)
-        return isMarked(value.text.substring(start, end), STRIKETHROUGH_MARKER)
+        return isWordMarked(value.text.substring(start, end), STRIKETHROUGH_MARKER)
     }
 
     /**
@@ -192,7 +212,13 @@ object MarkdownUtils {
      */
     fun isCode(value: TextFieldValue): Boolean {
         val (start, end) = getSelectedIndices(value)
-        return isMarked(value.text.substring(start, end), CODE_MARKER)
+        return isWordMarked(value.text.substring(start, end), CODE_MARKER)
+    }
+
+    fun isNumbered(value: TextFieldValue): Boolean{
+        val (start, end) = getLineStartsIndex(value, '\n')
+        val regex = Regex("\\s*\\d+\\.\\s")
+        return regex.containsMatchIn(value.text.substring(start, end))
     }
 
     /**
@@ -296,6 +322,25 @@ object MarkdownUtils {
         return Pair(start, end)
     }
 
+    private fun getLineStartsIndex(value: TextFieldValue, endMarker: Char): Pair<Int, Int>{
+        val text = value.text
+        var start = value.selection.start
+        while (start >= 0 && text[start] != '\n'){
+            start--
+        }
+        if (text[start] == '\n'){
+            start++
+        }
+        var end = start
+        while (end < text.length && text[end] != endMarker){
+            end++
+        }
+        if (end+1 < text.length){
+            end++
+        }
+        return Pair(start, end)
+    }
+
     /**
      * Internal function to unmark the text from the specified marker.
      *
@@ -322,7 +367,7 @@ object MarkdownUtils {
      * @param marker The marker to look for.
      * @return True if the text is marked, false otherwise.
      */
-    private fun isMarked(text: String, marker: String): Boolean {
+    private fun isWordMarked(text: String, marker: String): Boolean {
         val regex = Regex("(?<=\\Q$marker\\E)(?=\\S).*\\S(?<=\\S)(?=\\Q$marker\\E)")
         return regex.containsMatchIn(text)
     }
