@@ -1,6 +1,10 @@
 package com.example.notehub.data.data_source
 
+import android.content.Context
 import android.os.Environment
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import com.example.notehub.ui.theme.Strings
 import com.example.notehub.utils.FileUtils
 import java.io.File
@@ -38,4 +42,6 @@ class LocalDataSource {
     companion object {
         val ROOT_PATH = FileUtils.ROOT_PATH
     }
+
+
 }

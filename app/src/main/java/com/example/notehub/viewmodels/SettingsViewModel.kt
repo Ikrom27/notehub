@@ -13,9 +13,5 @@ import javax.inject.Inject
 class SettingsViewModel @Inject constructor(
     val repository: MainRepository
 ): ViewModel() {
-    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
-    fun loginByGoogle(context: Context, coroutineScope: CoroutineScope) {
-        repository.setGoogleAuth(context, coroutineScope)
-    }
 
 }

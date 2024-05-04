@@ -1,6 +1,8 @@
 package com.example.notehub.ui.screens
 
+import android.content.Context
 import android.os.Build
+import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
@@ -18,6 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,6 +34,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.credentials.CredentialManager
+import androidx.credentials.GetCredentialRequest
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.notehub.constants.AUTHORS
 import com.example.notehub.constants.ENTER_ARRAY
@@ -38,6 +48,14 @@ import com.example.notehub.constants.FILE_ITEM_HEIGHT
 import com.example.notehub.constants.FILE_ITEM_RADIUS
 import com.example.notehub.constants.SWITCH_THEME
 import com.example.notehub.viewmodels.SettingsViewModel
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import java.security.MessageDigest
+import java.util.UUID
 
 
 @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
@@ -49,6 +67,11 @@ fun SettingsScreen(
     var isDarkTheme by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
 
+    val isLoggedIn = remember { mutableStateOf(false) }
+    LaunchedEffect(key1 = Unit) {
+        isLoggedIn.value = isLoggedIn(context)
+    }
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.padding(top = 58.dp)
@@ -57,22 +80,88 @@ fun SettingsScreen(
             isDarkTheme = isDarkTheme,
             onThemeSwitched = { isChecked -> isDarkTheme = isChecked }
         )
-        Authorization(
+        if (isLoggedIn.value) {
+            Text(text = "ТЫ блИн хорош, вошел в Приложуху через гуГлЧанСкий!!1!")
+        } else {
+            Authorization(onLoginClick = {
+                coroutineScope.launch {
+                    setSignIn(context, coroutineScope)
+                    isLoggedIn.value = isLoggedIn(context)
+                }
+            })
+        }
+        /*Authorization(
             onLoginClick = {
-                viewModel.loginByGoogle(context, coroutineScope)
-                Toast.makeText(context, "Login", Toast.LENGTH_SHORT).show()
+                setSignIn(context, coroutineScope)
             }
-        )
-        Text(text = AUTHORS,
+        )*/
+        Text(
+            text = AUTHORS,
             fontSize = 20.sp,
             fontWeight = FontWeight(600),
-            color = MaterialTheme.colorScheme.primary)
+            color = MaterialTheme.colorScheme.primary
+        )
 
     }
 }
 
+val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+object PreferencesKeys {
+    val LOGGED_IN = booleanPreferencesKey("logged_in")
+}
+suspend fun setLoggedIn(context: Context, loggedIn: Boolean) {
+    context.applicationContext.dataStore.edit { settings ->
+        settings[PreferencesKeys.LOGGED_IN] = loggedIn
+    }
+}
+suspend fun isLoggedIn(context: Context): Boolean {
+    val preferences = context.applicationContext.dataStore.data.first()
+    return preferences[PreferencesKeys.LOGGED_IN] ?: false
+}
+
+@RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
+fun setSignIn(context: Context, coroutineScope: CoroutineScope) {
+    val credentialManager = CredentialManager.create(context)
+
+    val rawNonce = UUID.randomUUID().toString()
+    val bytes = rawNonce.toByteArray()
+    val md = MessageDigest.getInstance("SHA-256")
+    val digest = md.digest(bytes)
+    val hashedNonce = digest.fold("") { str, it -> str + "%02x".format(it) }
+
+    val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
+        .setFilterByAuthorizedAccounts(false)
+        .setServerClientId("1019679628253-5a254upmo8m62v4c7tn2g2pi97lptldq.apps.googleusercontent.com")
+        .setNonce(hashedNonce)
+        .build()
+
+    val request: GetCredentialRequest = GetCredentialRequest.Builder()
+        .addCredentialOption(googleIdOption)
+        .build()
+
+    coroutineScope.launch {
+        try {
+            val result = credentialManager.getCredential(
+                request = request,
+                context = context
+            )
+            val credential = result.credential
+            val googleIdTokenCredential = GoogleIdTokenCredential
+                .createFrom(credential.data)
+            val googleIdToken = googleIdTokenCredential.idToken
+            Log.i("EBANIY GOOGLE", googleIdToken)
+            Toast.makeText(context, "You are signed in!", Toast.LENGTH_SHORT).show()
+
+            setLoggedIn(context, true)
+        } catch (e: Exception) {
+            Log.e("LoginError", "Failed to log in", e)
+            Toast.makeText(context, "Failed to sign in!", Toast.LENGTH_SHORT).show()
+        }
+    }
+}
+
 @Composable
-fun Authorization(onLoginClick: () -> Unit){
+fun Authorization(onLoginClick: () -> Unit) {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -90,7 +179,7 @@ fun Authorization(onLoginClick: () -> Unit){
 fun ThemeSwitchBar(
     isDarkTheme: Boolean,
     onThemeSwitched: (Boolean) -> Unit
-){
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
