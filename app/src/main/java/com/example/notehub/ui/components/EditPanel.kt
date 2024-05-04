@@ -1,29 +1,23 @@
 package com.example.notehub.ui.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import com.example.notehub.R
 import com.example.notehub.constants.EDIT_PANEL_HEIGHT
-import com.example.notehub.constants.ICON_MEDIUM
 import com.example.notehub.constants.ICON_MEDIUM_PLUS
-import com.example.notehub.constants.MINIMAL_HEIGHT
-import com.example.notehub.constants.SEPARATOR_COLOR
+import com.example.notehub.constants.SPACER_EXTRA_SMALL
 import com.example.notehub.utils.MarkdownUtils
 
 data class EditPanelButton(
@@ -45,39 +39,29 @@ fun EditPanel(
             .height(EDIT_PANEL_HEIGHT)
             .background(MaterialTheme.colorScheme.background),
     ) {
-        Box(modifier.fillMaxWidth().height(MINIMAL_HEIGHT).background(SEPARATOR_COLOR))
+        SeparatorDecoration()
         LazyRow(
-            modifier = Modifier.fillMaxHeight(),
-            verticalAlignment = Alignment.CenterVertically
+            modifier = Modifier.fillMaxSize(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(SPACER_EXTRA_SMALL)
         ) {
             items(items = EDIT_PANEL_BUTTONS){ button ->
                 val selected = button.selected(textFieldValue)
-                IconButton(
-                    onClick = { onTextChange(button.onClick(textFieldValue, selected)) },
-                    modifier = Modifier
-                        .height(ICON_MEDIUM_PLUS)
-                        .background(color = if(selected) MaterialTheme.colorScheme.surfaceVariant else Color.Transparent)
+                SelectableButton(
+                    icon = button.icon,
+                    selected = button.selected(textFieldValue),
+                    size = ICON_MEDIUM_PLUS
                 ) {
-                    Icon(painter = painterResource(
-                        id = button.icon),
-                        tint = MaterialTheme.colorScheme.primary,
-                        contentDescription = null,
-                        modifier = Modifier.height(ICON_MEDIUM)
-                    )
+                    onTextChange(button.onClick(textFieldValue, selected))
                 }
             }
             item {
-                IconButton(
-                    onClick = { },
-                    modifier = Modifier
-                        .height(ICON_MEDIUM_PLUS)
+                SelectableButton(
+                    icon = R.drawable.ic_edit,
+                    selected = false,
+                    size = ICON_MEDIUM_PLUS
                 ) {
-                    Icon(painter = painterResource(
-                        id = R.drawable.ic_edit),
-                        tint = MaterialTheme.colorScheme.primary,
-                        contentDescription = null,
-                        modifier = Modifier.height(ICON_MEDIUM)
-                    )
+
                 }
             }
         }

@@ -22,9 +22,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.notehub.R
+import com.example.notehub.constants.ICON_LARGE
 import com.example.notehub.constants.MAIN_HORIZONTAL_PADDING
 import com.example.notehub.constants.NOTE_TITLE_SIZE
 import com.example.notehub.constants.TOP_BAR_HEIGHT
+import com.example.notehub.ui.components.SelectableButton
 
 @Composable
 fun EditorBar(
@@ -48,21 +50,11 @@ fun EditorBar(
             color = MaterialTheme.colorScheme.primary
         )
         Row {
-            IconButton(
-                modifier = Modifier
-                    .size(44.dp)
-                    .background(
-                        shape = RoundedCornerShape(10.dp),
-                        color = if(isEditMode) MaterialTheme.colorScheme.surfaceVariant else Color.Transparent
-                    ),
-                onClick = { onEditClick() },
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_edit),
-                    tint = MaterialTheme.colorScheme.primary,
-                    contentDescription = null,
-                    modifier = Modifier.size(24.dp)
-                )
+            SelectableButton(
+                icon = R.drawable.ic_edit,
+                selected = isEditMode,
+                size = ICON_LARGE) {
+                onEditClick()
             }
             Spacer(modifier = Modifier.width(8.dp))
             IconButton(
