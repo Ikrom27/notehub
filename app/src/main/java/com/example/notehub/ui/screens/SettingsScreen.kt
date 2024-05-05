@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -42,11 +43,13 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.notehub.constants.AUTHENTICATION
 import com.example.notehub.constants.AUTHORS
 import com.example.notehub.constants.ENTER_ARRAY
 import com.example.notehub.constants.FILE_ITEM_HEIGHT
 import com.example.notehub.constants.FILE_ITEM_RADIUS
 import com.example.notehub.constants.SWITCH_THEME
+import com.example.notehub.ui.components.NoteItem
 import com.example.notehub.viewmodels.SettingsViewModel
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
@@ -90,18 +93,12 @@ fun SettingsScreen(
                 }
             })
         }
-        /*Authorization(
-            onLoginClick = {
-                setSignIn(context, coroutineScope)
-            }
-        )*/
         Text(
             text = AUTHORS,
             fontSize = 20.sp,
             fontWeight = FontWeight(600),
             color = MaterialTheme.colorScheme.primary
         )
-
     }
 }
 
@@ -166,11 +163,32 @@ fun Authorization(onLoginClick: () -> Unit) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Button(
-            onClick = {
-                onLoginClick()
-            }) {
-            Text(text = "Login")
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(FILE_ITEM_HEIGHT)
+                .clip(shape = RoundedCornerShape(FILE_ITEM_RADIUS))
+                .background(MaterialTheme.colorScheme.surfaceVariant)
+                .clickable { onLoginClick() }
+        ) {
+            Text(
+                text = AUTHENTICATION,
+                fontSize = 20.sp,
+                fontWeight = FontWeight(600),
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 12.dp)
+            )
+            Icon(
+                painter = painterResource(id = ENTER_ARRAY),
+                tint = MaterialTheme.colorScheme.primary,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(36.dp)
+                    .padding(end = 12.dp)
+            )
         }
     }
 }
@@ -193,7 +211,9 @@ fun ThemeSwitchBar(
             fontSize = 20.sp,
             fontWeight = FontWeight(600),
             color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier
+                .weight(1f)
+                .padding(start = 12.dp)
         )
         Icon(
             painter = painterResource(id = ENTER_ARRAY),
@@ -210,7 +230,9 @@ fun ThemeSwitchBar(
             painter = painterResource(id = ENTER_ARRAY),
             contentDescription = null,
             tint = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier
+                .size(36.dp)
+                .padding(end = 12.dp)
         )
     }
 }

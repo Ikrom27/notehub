@@ -1,7 +1,9 @@
 package com.example.notehub.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.notehub.constants.ADD_ICON_TOP_PADDING
 import com.example.notehub.constants.ENTER_ARRAY
@@ -28,6 +31,8 @@ import com.example.notehub.constants.FILE_ITEMS_BETWEEN_PADDING
 import com.example.notehub.constants.FILE_ITEM_HEIGHT
 import com.example.notehub.constants.FILE_ITEM_RADIUS
 import com.example.notehub.constants.ICON_MEDIUM
+import com.example.notehub.constants.NOTE_ITEM_HEIGHT
+import com.example.notehub.constants.NOTE_ITEM_RADIUS
 
 
 @Composable
@@ -84,3 +89,35 @@ fun AddIcon(onClick: () -> Unit){
         }
     }
 }
+
+@Composable
+fun NoteItem(title: String,
+             modifier: Modifier = Modifier,
+             noteText: String){
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+            .size(133.dp, NOTE_ITEM_HEIGHT)
+            //.height(NOTE_ITEM_HEIGHT)
+            .clip(
+                shape = RoundedCornerShape(NOTE_ITEM_RADIUS)
+            )
+            .background(MaterialTheme.colorScheme.surfaceVariant)
+    ) {
+        Text(
+            text = title,
+            fontSize = 20.sp,
+            fontWeight = FontWeight(600),
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.fillMaxWidth().padding(10.dp,28.dp,10.dp,27.dp)
+        )
+        Text(
+            text = noteText,
+            fontSize = 20.sp,
+            fontWeight = FontWeight(600),
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.fillMaxWidth().padding(start = 10.dp, end = 10.dp)
+        )
+    }
+}
+
