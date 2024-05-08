@@ -27,7 +27,7 @@ import com.example.notehub.constants.ENTER_ARRAY
 import com.example.notehub.constants.FILE_ITEMS_BETWEEN_PADDING
 import com.example.notehub.constants.FILE_ITEM_HEIGHT
 import com.example.notehub.constants.FILE_ITEM_RADIUS
-import com.example.notehub.constants.ICON_MEDIUM
+import com.example.notehub.constants.ICON_LARGE
 
 
 @Composable
@@ -76,7 +76,7 @@ fun AddIcon(onClick: () -> Unit){
     ) {
         IconButton(
             modifier = Modifier
-                .size(ICON_MEDIUM)
+                .size(ICON_LARGE)
                 .background(color = MaterialTheme.colorScheme.primary, shape = CircleShape),
             onClick = { onClick() }
         ) {

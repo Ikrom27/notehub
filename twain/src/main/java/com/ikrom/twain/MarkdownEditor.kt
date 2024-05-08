@@ -14,6 +14,7 @@ import android.text.InputType
 import android.text.Spannable
 import android.text.TextWatcher
 import android.text.style.BackgroundColorSpan
+import android.view.MotionEvent
 import android.view.View
 import android.view.accessibility.AccessibilityEvent
 import android.view.inputmethod.EditorInfo
@@ -83,7 +84,7 @@ import java.util.concurrent.Executors
 @Composable
 @NonRestartableComposable
 fun MarkdownEditor(
-    value: String,
+    value: TextFieldValue,
     onValueChange: (TextFieldValue) -> Unit,
     modifier: Modifier = Modifier,
     charLimit: Int? = null,
@@ -96,7 +97,7 @@ fun MarkdownEditor(
     val context = LocalContext.current
     @Suppress("DEPRECATION") val vibrator =
         context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-    val (lastCounter, setLastCounter) = rememberSaveable { mutableIntStateOf(value.length) }
+    val (lastCounter, setLastCounter) = rememberSaveable { mutableIntStateOf(value.text.length) }
 
     AndroidView(modifier = modifier, factory = { ctx ->
         createEditor(
@@ -112,11 +113,12 @@ fun MarkdownEditor(
     }, update = { editText ->
         setView(editText)
         if (maxLines != null) editText.maxLines = maxLines
-        if (value != editText.text.toString()) {
-            editText.setText(value)
+        if (value.text != editText.text.toString()) {
+            editText.setText(value.text)
+            editText.setSelection(value.selection.start)
         }
         updateCounterRemaining(
-            value.length,
+            value.text.length,
             lastCounter,
             vibrator,
             editText,
@@ -241,10 +243,11 @@ private fun imageKeyboardEditText(context: Context): EditText = object : EditTex
     }
 }
 
+@SuppressLint("ClickableViewAccessibility")
 @Suppress("LongParameterList")
 private fun createEditor(
     context: Context,
-    value: String,
+    value: TextFieldValue,
     onValueChange: (TextFieldValue) -> Unit,
     maxLines: Int?,
     inputType: Int,
@@ -269,6 +272,9 @@ private fun createEditor(
         )
         .build()
     return imageKeyboardEditText(context).apply {
+        requestFocus()
+        setSelection(value.selection.start, value.selection.end)
+        val select = value.selection.start
         movementMethod = LinksPlusArrowKeysMovementMethod.instance
         setBackgroundResource(android.R.color.transparent) // removes EditText underbar
         hint?.let { setHint(it) }
@@ -281,7 +287,7 @@ private fun createEditor(
                 this
             )
         )
-        setText(value)
+        setText(value.text)
         addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
@@ -300,24 +306,16 @@ private fun createEditor(
                 }
             }
         })
-        val textRange = MutableLiveData<TextRange>()
-        this.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(editable: Editable?) {
-                textRange.postValue(TextRange(this@apply.selectionStart, this@apply.selectionEnd))
-            }
-        })
         accessibilityDelegate = object : View.AccessibilityDelegate() {
             override fun sendAccessibilityEvent(host: View, eventType: Int) {
                 super.sendAccessibilityEvent(host, eventType)
                 if (eventType == AccessibilityEvent.TYPE_VIEW_TEXT_SELECTION_CHANGED) {
-                    onValueChange(TextFieldValue(
-                        text = text.toString(),
-                        selection = textRange.value ?: TextRange(this@apply.selectionStart, this@apply.selectionEnd)
-                    ))
+                    post {
+                        onValueChange(TextFieldValue(
+                            text = text.toString(),
+                            selection = TextRange(selectionStart, selectionEnd)
+                        ))
+                    }
                 }
             }
         }
