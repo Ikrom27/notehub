@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     //Dagger hilt
     kotlin("kapt")
+    id("org.jetbrains.dokka") version "1.9.20"
     id("com.google.dagger.hilt.android")
 }
 
@@ -33,11 +34,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
     buildFeatures {
         compose = true
@@ -59,6 +60,8 @@ dependencies {
     implementation("com.google.dagger:dagger:2.47")
     kapt("com.google.dagger:dagger-compiler:2.47")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+    //Documentation
+    dokkaPlugin("org.jetbrains.dokka:android-documentation-plugin:1.9.20")
     //Other
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
