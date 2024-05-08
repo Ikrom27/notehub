@@ -16,6 +16,7 @@ val EDIT_PANEL_HEIGHT = 36.dp
 val MINIMAL_HEIGHT = 1.dp
 val SPACER_MEDIUM = 20.dp
 val SPACER_EXTRA_SMALL = 8.dp
+val NOTE_ITEM_HEIGHT = 185.dp
 
 //Paddings
 val MAIN_HORIZONTAL_PADDING = 6.dp
@@ -25,6 +26,7 @@ val ADD_ICON_TOP_PADDING = 15.dp
 //Radius
 val FILE_ITEM_RADIUS = 10.dp
 val RADIUS_EXTRA_SMALL = 4.dp
+val NOTE_ITEM_RADIUS = 40.dp
 
 //Text size
 val TITLE_SIZE = 20.sp

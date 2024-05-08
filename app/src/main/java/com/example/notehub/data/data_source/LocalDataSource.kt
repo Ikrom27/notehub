@@ -1,6 +1,6 @@
 package com.example.notehub.data.data_source
 
-import com.example.notehub.data.data_source.LocalDataSource.Companion.ROOT_PATH
+import android.os.Environment
 import com.example.notehub.ui.theme.Strings
 import com.example.notehub.utils.FileUtils
 import java.io.File
