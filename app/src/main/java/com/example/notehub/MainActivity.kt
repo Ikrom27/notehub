@@ -12,6 +12,7 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.ui.Modifier
+import com.example.notehub.ui.components.MainContainer
 import com.example.notehub.ui.screens.EditorScreen
 import com.example.notehub.ui.screens.SettingsScreen
 import com.example.notehub.ui.theme.NoteHubTheme
@@ -35,7 +36,8 @@ class MainActivity : ComponentActivity() {
             NoteHubTheme {
                 Box(Modifier.safeDrawingPadding()){
 //                    EditorScreen()
-                    SettingsScreen()
+//                    SettingsScreen()
+                    MainContainer()
                 }
             }
         }
