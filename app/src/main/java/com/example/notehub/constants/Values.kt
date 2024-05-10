@@ -8,6 +8,7 @@ val ICON_EXTRA_SMALL = 13.dp
 val ICON_MEDIUM = 20.dp
 val ICON_MEDIUM_PLUS = 28.dp
 val ICON_LARGE = 44.dp
+val FLOATING_ICON_SIZE = 55.dp
 
 //Dimens
 val FILE_ITEM_HEIGHT = 46.dp

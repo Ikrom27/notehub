@@ -22,7 +22,7 @@ import com.example.notehub.R
 
 private val DarkColorScheme = darkColorScheme(
     primary = Orange,
-    onPrimary = Color.White,
+    onPrimary = Color.Black,
     secondary = Orange,
     background = Color.Black,
     surface = DarkGrey,
@@ -41,8 +41,6 @@ private val LightColorScheme = lightColorScheme(
 @Composable
 fun NoteHubTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
