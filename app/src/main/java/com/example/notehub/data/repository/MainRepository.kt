@@ -9,8 +9,12 @@ class MainRepository @Inject constructor(
     private val googleDataSource: GoogleDataSource,
     private val localDataSource: LocalDataSource
 ) {
-    fun getFilesList(directoryPath: String = LocalDataSource.ROOT_PATH): List<File> {
+    fun getDirList(directoryPath: String = LocalDataSource.ROOT_PATH): List<File> {
         return localDataSource.getDirList(directoryPath)
+    }
+
+    fun getFiles(dir: String): List<File> {
+        return localDataSource.getFilesList(dir)
     }
 
     fun getDefaultFolders(): List<File>{

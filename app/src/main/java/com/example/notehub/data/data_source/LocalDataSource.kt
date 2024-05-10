@@ -1,7 +1,9 @@
 package com.example.notehub.data.data_source
 
+import android.util.Log
 import com.example.notehub.ui.theme.Strings
 import com.example.notehub.utils.FileUtils
+import com.example.notehub.utils.addPath
 import java.io.File
 
 /**
@@ -30,8 +32,8 @@ class LocalDataSource {
         return subdirectories
     }
 
-    fun getFilesList(directoryPath: String = ROOT_PATH): List<File> {
-        val files = File(directoryPath)
+    fun getFilesList(dir: String): List<File> {
+        val files = File(FileUtils.ROOT_PATH.addPath(dir))
         val subdirectories = mutableListOf<File>()
 
         files.listFiles()?.forEach { file ->

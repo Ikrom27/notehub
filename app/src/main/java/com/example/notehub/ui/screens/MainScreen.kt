@@ -36,6 +36,7 @@ import com.example.notehub.ui.components.CreateNewFolderDialog
 import com.example.notehub.ui.components.FolderItem
 import com.example.notehub.ui.theme.YOUR_FOLDER
 import com.example.notehub.utils.FileUtils
+import com.example.notehub.utils.addPath
 import com.example.notehub.viewmodels.MainViewModel
 import java.io.File
 
@@ -54,7 +55,7 @@ fun MainScreen(
     FoldersList(
         viewModel = viewModel,
         onItemClick = {
-
+            navController.navigate("NoteListScreen/${it.name}")
         },
         onAddClick = {showCreateFolderDialog = true},
         menuItems = {file ->

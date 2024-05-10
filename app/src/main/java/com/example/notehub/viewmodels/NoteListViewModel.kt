@@ -9,24 +9,17 @@ import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
-    val repository: MainRepository
-): ViewModel() {
+class NoteListViewModel @Inject constructor(
+    private val repository: MainRepository
+) : ViewModel() {
     private val _fileList = MutableStateFlow<List<File>>(emptyList())
-    private val _defaultFolders = MutableStateFlow<List<File>>(emptyList())
     val fileList = _fileList
-    val defaultFolders = _defaultFolders
 
     init {
         updateFilesList()
-        updateDefaultFolders()
     }
 
-    fun updateFilesList(directoryPath: String = LocalDataSource.ROOT_PATH) {
-        _fileList.value = repository.getDirList(directoryPath)
-    }
-
-    fun updateDefaultFolders() {
-        _defaultFolders.value = repository.getDefaultFolders()
+    fun updateFilesList(dir: String = LocalDataSource.ROOT_PATH) {
+        _fileList.value = repository.getFiles(dir)
     }
 }

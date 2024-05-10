@@ -32,8 +32,10 @@ import java.io.File
 @Composable
 fun EditorScreen(
     navController: NavController,
+    dirName: String,
+    fileName: String
 ) {
-    val file = File(FileUtils.ROOT_PATH.addPath("README.md"))
+    val file = File(FileUtils.ROOT_PATH.addPath(dirName).addPath(fileName))
     var isEditableMode by remember { mutableStateOf(false) }
     var textFieldValue by remember {
         mutableStateOf(TextFieldValue(file.readText()))
@@ -44,7 +46,7 @@ fun EditorScreen(
         Scaffold(
             topBar = {
                 EditorBar(
-                    title = "My note",
+                    title = fileName,
                     isEditMode = isEditableMode
                 ) {
                     isEditableMode = !isEditableMode
