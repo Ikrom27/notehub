@@ -169,7 +169,7 @@ fun Authorization(onLoginClick: () -> Unit) {
                 .fillMaxWidth()
                 .height(FILE_ITEM_HEIGHT)
                 .clip(shape = RoundedCornerShape(FILE_ITEM_RADIUS))
-                .background(MaterialTheme.colorScheme.surfaceVariant)
+                .background(MaterialTheme.colorScheme.surface)
                 .clickable { onLoginClick() }
         ) {
             Text(
@@ -204,7 +204,7 @@ fun ThemeSwitchBar(
             .fillMaxWidth()
             .height(FILE_ITEM_HEIGHT)
             .clip(shape = RoundedCornerShape(FILE_ITEM_RADIUS))
-            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .background(MaterialTheme.colorScheme.surface)
     ) {
         Text(
             text = SWITCH_THEME,

@@ -50,7 +50,7 @@ fun FolderItem(
             .clip(
                 shape = RoundedCornerShape(FILE_ITEM_RADIUS)
             )
-            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .background(MaterialTheme.colorScheme.surface)
     ) {
         Text(
             text = title,
@@ -103,7 +103,7 @@ fun NoteItem(title: String,
             .clip(
                 shape = RoundedCornerShape(NOTE_ITEM_RADIUS)
             )
-            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .background(MaterialTheme.colorScheme.surface)
     ) {
         Text(
             text = title,

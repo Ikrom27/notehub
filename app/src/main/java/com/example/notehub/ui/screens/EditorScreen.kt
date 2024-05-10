@@ -54,7 +54,6 @@ fun EditorScreen() {
             ) {
             LazyColumn(
                 modifier = Modifier
-                    .background(Color.Black)
                     .padding(top = it.calculateTopPadding())
             ) {
                 item {
