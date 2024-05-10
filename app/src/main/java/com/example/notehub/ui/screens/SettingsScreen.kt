@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
@@ -43,18 +42,17 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.notehub.constants.AUTHENTICATION
 import com.example.notehub.constants.AUTHORS
 import com.example.notehub.constants.ENTER_ARRAY
 import com.example.notehub.constants.FILE_ITEM_HEIGHT
 import com.example.notehub.constants.FILE_ITEM_RADIUS
 import com.example.notehub.constants.SWITCH_THEME
-import com.example.notehub.ui.components.NoteItem
 import com.example.notehub.viewmodels.SettingsViewModel
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.security.MessageDigest
@@ -64,6 +62,7 @@ import java.util.UUID
 @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
 @Composable
 fun SettingsScreen(
+    navController: NavController,
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
@@ -116,7 +115,6 @@ suspend fun isLoggedIn(context: Context): Boolean {
     return preferences[PreferencesKeys.LOGGED_IN] ?: false
 }
 
-@RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
 fun setSignIn(context: Context, coroutineScope: CoroutineScope) {
     val credentialManager = CredentialManager.create(context)
 

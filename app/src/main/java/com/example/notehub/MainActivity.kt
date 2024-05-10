@@ -15,12 +15,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.toArgb
-import com.example.notehub.ui.screens.EditorScreen
-import com.example.notehub.ui.screens.MainScreen
-import com.example.notehub.ui.screens.SettingsScreen
+import com.example.notehub.ui.NavHostContainer
 import com.example.notehub.ui.theme.NoteHubTheme
 import com.example.notehub.utils.FileUtils
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,9 +44,7 @@ class MainActivity : ComponentActivity() {
                     .background(MaterialTheme.colorScheme.background)
                     .safeDrawingPadding()
                 ){
-//                    EditorScreen()
-//                    SettingsScreen()
-                    MainScreen()
+                    NavHostContainer()
                 }
             }
         }
