@@ -3,6 +3,11 @@ package com.example.notehub.constants
 //labels
 const val LABEL_CREATE_NEW_FOLDER = "Create new folder"
 const val LABEL_FOLDER_NAME = "Folder name"
+const val YOUR_FOLDER = "Your folders"
+const val FOLDER_MAIN = "NoteHub"
+const val FOLDER_FAVORITE = ".Favorite"
+const val FOLDER_TEMPLATE = ".Template"
+const val FOLDER_TRASH = ".Trash"
 
 //Buttons
 const val LABEL_CONFIRM = "Confirm"

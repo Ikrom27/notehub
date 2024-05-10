@@ -2,11 +2,14 @@ package com.example.notehub.utils
 
 import android.os.Environment
 import android.util.Log
-import com.example.notehub.ui.theme.Strings
+import com.example.notehub.constants.FOLDER_FAVORITE
+import com.example.notehub.constants.FOLDER_MAIN
+import com.example.notehub.constants.FOLDER_TEMPLATE
+import com.example.notehub.constants.FOLDER_TRASH
 import java.io.File
 
 object FileUtils {
-    val ROOT_PATH = "${Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)}/${Strings.FOLDER_MAIN}"
+    val ROOT_PATH = "${Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)}/${FOLDER_MAIN}"
     val TAG = "FileUtils"
 
     /**
@@ -14,9 +17,9 @@ object FileUtils {
      */
     fun generateDirectories(){
         createDirectory(ROOT_PATH, "")
-        createDirectory(ROOT_PATH, Strings.FOLDER_FAVORITE)
-        createDirectory(ROOT_PATH, Strings.FOLDER_TEMPLATE)
-        createDirectory(ROOT_PATH, Strings.FOLDER_TRASH)
+        createDirectory(ROOT_PATH, FOLDER_FAVORITE)
+        createDirectory(ROOT_PATH, FOLDER_TEMPLATE)
+        createDirectory(ROOT_PATH, FOLDER_TRASH)
     }
 
     /**

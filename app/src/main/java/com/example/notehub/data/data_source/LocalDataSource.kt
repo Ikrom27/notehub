@@ -1,7 +1,9 @@
 package com.example.notehub.data.data_source
 
 import android.util.Log
-import com.example.notehub.ui.theme.Strings
+import com.example.notehub.constants.FOLDER_FAVORITE
+import com.example.notehub.constants.FOLDER_TEMPLATE
+import com.example.notehub.constants.FOLDER_TRASH
 import com.example.notehub.utils.FileUtils
 import com.example.notehub.utils.addPath
 import java.io.File
@@ -51,9 +53,9 @@ class LocalDataSource {
      */
     fun getDefaultFolders(): List<File>{
         return listOf(
-            File(ROOT_PATH +"/${Strings.FOLDER_FAVORITE}"),
-            File(ROOT_PATH +"/${Strings.FOLDER_TEMPLATE}"),
-            File(ROOT_PATH +"/${Strings.FOLDER_TRASH}")
+            File(ROOT_PATH +"/${FOLDER_FAVORITE}"),
+            File(ROOT_PATH +"/${FOLDER_TEMPLATE}"),
+            File(ROOT_PATH +"/${FOLDER_TRASH}")
         )
     }
 

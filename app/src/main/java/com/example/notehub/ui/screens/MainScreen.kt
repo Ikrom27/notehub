@@ -31,12 +31,11 @@ import com.example.notehub.constants.LABEL_RENAME
 import com.example.notehub.constants.MAIN_HORIZONTAL_PADDING
 import com.example.notehub.constants.TITLE_SIZE
 import com.example.notehub.constants.TITLE_WEIGHT
+import com.example.notehub.constants.YOUR_FOLDER
 import com.example.notehub.ui.components.AddIcon
 import com.example.notehub.ui.components.CreateNewFolderDialog
 import com.example.notehub.ui.components.FolderItem
-import com.example.notehub.ui.theme.YOUR_FOLDER
 import com.example.notehub.utils.FileUtils
-import com.example.notehub.utils.addPath
 import com.example.notehub.viewmodels.MainViewModel
 import java.io.File
 
