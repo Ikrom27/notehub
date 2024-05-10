@@ -16,9 +16,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.Typeface
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.NavController
+import com.example.notehub.R
 import com.example.notehub.constants.MAIN_HORIZONTAL_PADDING
 import com.example.notehub.ui.bars.EditorBar
 import com.example.notehub.ui.components.EditPanel
@@ -56,7 +61,7 @@ fun EditorScreen(
             ) {
             LazyColumn(
                 modifier = Modifier
-                    .padding(top = it.calculateTopPadding())
+                    .padding(top = it.calculateTopPadding(), bottom = 56.dp)
             ) {
                 item {
                     DisplayMarkDown(isEditableMode, textFieldValue) {
@@ -83,6 +88,7 @@ fun DisplayMarkDown(
     onTextChange: (TextFieldValue) -> Unit
 ){
     var textColor = MaterialTheme.colorScheme.onBackground
+    val context = LocalContext.current
     if (isEditableMode) {
         MarkdownEditor(
             value = value,
@@ -95,6 +101,7 @@ fun DisplayMarkDown(
             setView = {
                 it.setTextColor(textColor.toArgb())
                 it.textSize = 18f
+                it.typeface = ResourcesCompat.getFont(context, R.font.inter_regular)
             }
         )
     } else {
@@ -102,6 +109,7 @@ fun DisplayMarkDown(
             markdown = value.text,
             color = textColor,
             fontSize = 18.sp,
+            fontResource = R.font.inter_regular,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = MAIN_HORIZONTAL_PADDING),

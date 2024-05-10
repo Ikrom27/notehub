@@ -23,6 +23,7 @@ markwon = "4.6.2"
 maven-publish = "0.28.0"
 test = "1.5.2"
 twain = "0.3.2"
+ui-text-google-fonts = "1.6.7"
 
 [libraries]
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
@@ -72,6 +73,7 @@ markwon-image-coil = { module = "io.noties.markwon:image-coil", version.ref = "m
 markwon-strikethrough = { module = "io.noties.markwon:ext-strikethrough", version.ref = "markwon" }
 markwon-tables = { module = "io.noties.markwon:ext-tables", version.ref = "markwon" }
 twain = { module = "com.colintheshots:twain", version.ref = "twain" }
+androidx-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "ui-text-google-fonts" }
 
 [bundles]
 compose = ["compose-compiler", "compose-runtime", "compose-foundation", "compose-material-core", "compose-material-icons-core", "compose-material-icons-extended", "compose-ui-core", "compose-ui-tooling", "compose-ui-util"]
