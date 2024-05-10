@@ -1,6 +1,5 @@
 package com.example.notehub.data.data_source
 
-import android.os.Environment
 import com.example.notehub.ui.theme.Strings
 import com.example.notehub.utils.FileUtils
 import java.io.File
@@ -19,18 +18,26 @@ class LocalDataSource {
      * @return A list of files within the directory.
      * @throws IllegalArgumentException If the provided path is not a directory.
      */
+    fun getDirList(directoryPath: String = ROOT_PATH): List<File> {
+        val files = File(directoryPath)
+        val subdirectories = mutableListOf<File>()
+
+        files.listFiles()?.forEach { file ->
+            if (isCorrectDir(file)) {
+                subdirectories.add(file)
+            }
+        }
+        return subdirectories
+    }
+
     fun getFilesList(directoryPath: String = ROOT_PATH): List<File> {
         val files = File(directoryPath)
         val subdirectories = mutableListOf<File>()
 
-        if (isCorrectFile(files)) {
-            files.listFiles()?.forEach { file ->
-                if (isCorrectFile(file)) {
-                    subdirectories.add(file)
-                }
+        files.listFiles()?.forEach { file ->
+            if (isCorrectFile(file)) {
+                subdirectories.add(file)
             }
-        } else {
-            throw IllegalArgumentException("The provided file is not a directory!")
         }
         return subdirectories
     }
@@ -55,7 +62,11 @@ class LocalDataSource {
      * @return `true` if the file is a directory or has a ".md" extension and is not hidden, `false` otherwise.
      */
     fun isCorrectFile(file: File): Boolean{
-        return (file.isDirectory || file.extension.equals("md", ignoreCase = true)) && !file.isHidden
+        return file.extension.equals("md", ignoreCase = true) && !file.isHidden
+    }
+
+    fun isCorrectDir(file: File): Boolean{
+        return file.isDirectory && !file.isHidden
     }
 
     companion object {
