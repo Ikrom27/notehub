@@ -114,8 +114,8 @@ object MarkdownUtils {
 
     fun makeNumbered(value: TextFieldValue): TextFieldValue {
         val text = value.text
-        val currentStart = getLineStartsIndex(value, '\n').first
-        var prevStart = getLineStartsIndex(value.copy(selection = TextRange(currentStart-2)), '\n').first
+        val currentStart = getLineStartsIndex(text, value.selection, '\n').first
+        var prevStart = getLineStartsIndex(text, TextRange(currentStart-2), '\n').first
         var spaceCount = 0
         var lastNumber = 0
         while (!text[prevStart].isDigit()){
@@ -128,6 +128,21 @@ object MarkdownUtils {
         }
         val newText = text.substring(0, currentStart) + " ".repeat(spaceCount) + (lastNumber+1) + ". " + text.substring(currentStart, text.length)
         val newSelection = TextRange(value.selection.start+lastNumber.toString().length)
+        return TextFieldValue(newText, newSelection)
+    }
+
+    fun makeMarkedList(value: TextFieldValue): TextFieldValue {
+        val text = value.text
+        val (start, end) = getLineStartsIndex(text, value.selection, '\n')
+        var newEnd = end
+        var newText = text.substring(newEnd, end)
+        while (newEnd != start){
+            val tmp = newEnd
+            newEnd = getLineStartsIndex(text, TextRange(newEnd-2)).first
+            newText = "* " + text.substring(newEnd, tmp) + newText
+        }
+        newText = text.substring(0, start) + newText + text.substring(end, text.length)
+        val newSelection = TextRange(end)
         return TextFieldValue(newText, newSelection)
     }
 
@@ -216,7 +231,7 @@ object MarkdownUtils {
     }
 
     fun isNumbered(value: TextFieldValue): Boolean{
-        val (start, end) = getLineStartsIndex(value, '\n')
+        val (start, end) = getLineStartsIndex(value.text, value.selection, '\n')
         val regex = Regex("\\s*\\d+\\.\\s")
         return regex.containsMatchIn(value.text.substring(start, end))
     }
@@ -322,16 +337,18 @@ object MarkdownUtils {
         return Pair(start, end)
     }
 
-    private fun getLineStartsIndex(value: TextFieldValue, endMarker: Char): Pair<Int, Int>{
-        val text = value.text
-        var start = value.selection.start
+    private fun getLineStartsIndex(text: String, range: TextRange, endMarker: Char? = null): Pair<Int, Int>{
+        var start = range.start
         while (start >= 0 && text[start] != '\n'){
             start--
         }
         if (text[start] == '\n'){
             start++
         }
-        var end = start
+        if (endMarker == null){
+            return Pair(start, range.end)
+        }
+        var end = if (range.start == range.end) start else range.end
         while (end < text.length && text[end] != endMarker){
             end++
         }

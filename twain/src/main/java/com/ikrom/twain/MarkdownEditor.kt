@@ -273,8 +273,6 @@ private fun createEditor(
         .build()
     return imageKeyboardEditText(context).apply {
         requestFocus()
-        setSelection(value.selection.start, value.selection.end)
-        val select = value.selection.start
         movementMethod = LinksPlusArrowKeysMovementMethod.instance
         setBackgroundResource(android.R.color.transparent) // removes EditText underbar
         hint?.let { setHint(it) }
