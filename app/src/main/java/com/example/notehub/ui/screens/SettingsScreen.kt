@@ -115,6 +115,7 @@ suspend fun isLoggedIn(context: Context): Boolean {
     return preferences[PreferencesKeys.LOGGED_IN] ?: false
 }
 
+@RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
 fun setSignIn(context: Context, coroutineScope: CoroutineScope) {
     val credentialManager = CredentialManager.create(context)
 

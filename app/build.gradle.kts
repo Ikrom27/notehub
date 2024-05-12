@@ -52,7 +52,6 @@ android {
 }
 
 dependencies {
-    implementation("androidx.compose.ui:ui-text-google-fonts:1.6.7")
     //google auth
     implementation(libs.bundles.google.credentials)
     //DataStore
