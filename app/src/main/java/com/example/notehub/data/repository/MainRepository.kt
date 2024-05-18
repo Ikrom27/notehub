@@ -24,4 +24,8 @@ class MainRepository @Inject constructor(
     fun uploadToStorage(userUid: String){
         return googleDataSource.uploadFileToFirebaseStorage(userUid)
     }
+
+    fun downloadFromStorage(userUid: String){
+        return googleDataSource.downloadFilesFromFirebaseStorage(userUid)
+    }
 }

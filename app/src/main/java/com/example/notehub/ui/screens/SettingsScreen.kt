@@ -89,7 +89,8 @@ fun SettingsScreen(
                 fontSize = 20.sp,
                 fontWeight = FontWeight(600),)
             FirebaseAuth.getInstance().currentUser?.uid?.let { uid ->
-                viewModel.uploadToStorage(uid)
+                //viewModel.uploadToStorage(uid)
+                viewModel.downloadFromStorage(uid)
             }
         } else {
             Authorization(onLoginClick = {

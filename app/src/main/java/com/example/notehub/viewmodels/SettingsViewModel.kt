@@ -17,4 +17,10 @@ class SettingsViewModel @Inject constructor(
             repository.uploadToStorage(userUid)
         }
     }
+
+    fun downloadFromStorage(userUid: String){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.downloadFromStorage(userUid)
+        }
+    }
 }
