@@ -16,7 +16,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Modifier
-import com.example.notehub.ui.NavHostContainer
+import com.example.notehub.ui.screens.SettingsScreen
 import com.example.notehub.ui.theme.NoteHubTheme
 import com.example.notehub.utils.FileUtils
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,12 +39,14 @@ class MainActivity : ComponentActivity() {
             NoteHubTheme(
                 darkTheme = true,
             ) {
-                Box(Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.background)
-                    .safeDrawingPadding()
+                Box(
+                    Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.background)
+                        .safeDrawingPadding()
                 ){
-                    NavHostContainer()
+                    //NavHostContainer()
+                    SettingsScreen()
                 }
             }
         }

@@ -20,4 +20,8 @@ class MainRepository @Inject constructor(
     fun getDefaultFolders(): List<File>{
         return localDataSource.getDefaultFolders()
     }
+
+    fun uploadToStorage(userUid: String){
+        return googleDataSource.uploadFileToFirebaseStorage(userUid)
+    }
 }

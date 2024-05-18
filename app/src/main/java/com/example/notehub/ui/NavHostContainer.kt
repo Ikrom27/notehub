@@ -3,20 +3,20 @@ package com.example.notehub.ui
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.notehub.ui.screens.EditorScreen
 import com.example.notehub.ui.screens.MainScreen
 import com.example.notehub.ui.screens.NoteListScreen
-import com.example.notehub.ui.screens.SettingsScreen
-import com.example.notehub.utils.FileUtils
-import com.example.notehub.utils.addPath
 
 @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
 @Composable
 fun NavHostContainer(){
     val navController = rememberNavController()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
 
     NavHost(
         navController = navController,
@@ -26,7 +26,7 @@ fun NavHostContainer(){
             MainScreen(navController)
         }
         composable("SettingsScreen"){
-            SettingsScreen(navController)
+            //SettingsScreen(navController)
         }
         composable("EditorScreen/{dir}/{file}"){
             val dirName = it.arguments?.getString("dir")

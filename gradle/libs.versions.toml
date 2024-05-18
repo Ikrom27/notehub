@@ -13,6 +13,8 @@ dagger-compiler = "2.47"
 datastore-preferences = "1.1.1"
 dagger = "2.47"
 espresso = "3.5.1"
+firebase-auth-ktx = "23.0.0"
+firebase-storage-ktx = "21.0.0"
 googleid = "1.1.0"
 junit = "1.1.5"
 junit-junit = "4.13.2"
@@ -20,6 +22,10 @@ hilt-navigation = "1.2.0"
 kotlin = "1.9.23"
 lifecycle = "2.7.0"
 markwon = "4.6.2"
+play-services-auth = "21.1.1"
+play-services-drive = "17.0.0"
+google-services = "4.4.1"
+firebase-storage = "21.0.0"
 
 [libraries]
 android-documentation-plugin = { module = "org.jetbrains.dokka:android-documentation-plugin", version.ref = "android-documentation-plugin" }
@@ -51,6 +57,8 @@ dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = 
 dagger = {module = "com.google.dagger:dagger", version.ref = "dagger"}
 dagger-hilt = {module = "com.google.dagger:hilt-android", version.ref = "dagger"}
 dagger-hilt-compiler = {module = "com.google.dagger:hilt-android-compiler", version.ref = "dagger"}
+firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx", version.ref = "firebase-auth-ktx" }
+firebase-storage-ktx = { module = "com.google.firebase:firebase-storage-ktx", version.ref = "firebase-storage-ktx" }
 googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleid" }
 junit = { module = "junit:junit", version.ref = "junit-junit" }
 junit-core = { module = "androidx.test.ext:junit", version.ref = "junit" }
@@ -61,8 +69,12 @@ markwon-html = { module = "io.noties.markwon:html", version.ref = "markwon" }
 markwon-image-coil = { module = "io.noties.markwon:image-coil", version.ref = "markwon" }
 markwon-strikethrough = { module = "io.noties.markwon:ext-strikethrough", version.ref = "markwon" }
 markwon-tables = { module = "io.noties.markwon:ext-tables", version.ref = "markwon" }
+play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "play-services-auth" }
+play-services-drive = { module = "com.google.android.gms:play-services-drive", version.ref = "play-services-drive" }
 ui = { module = "androidx.compose.ui:ui" }
 ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
+google-services = { group = "com.google.gms", name = "google-services", version.ref = "google-services" }
+firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebase-storage" }
 
 [bundles]
 compose = ["compose-compiler", "compose-runtime", "compose-foundation", "compose-material-core", "compose-material-icons-core", "compose-material-icons-extended", "compose-ui-core", "compose-ui-tooling", "compose-ui-util"]
