@@ -2,6 +2,7 @@ package com.example.notehub
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
@@ -19,11 +20,11 @@ import androidx.compose.ui.Modifier
 import com.example.notehub.ui.NavHostContainer
 import com.example.notehub.ui.theme.NoteHubTheme
 import com.example.notehub.utils.FileUtils
+import com.example.notehub.utils.NotificationUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
     @SuppressLint("ResourceType")
     @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +36,15 @@ class MainActivity : ComponentActivity() {
                 startActivity(intent)
             }
         }
+        NotificationUtils.createChannel(this)
+        NotificationUtils.requestPermission(this)
+
+        val calendar = Calendar.getInstance().apply {
+            add(Calendar.SECOND, 5)
+        }
+
+        NotificationUtils.setReminder(this, calendar, "Работай, сучка")
+
         setContent {
             NoteHubTheme(
                 darkTheme = true,
