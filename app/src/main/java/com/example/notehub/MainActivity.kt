@@ -18,6 +18,9 @@ import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Modifier
 import com.example.notehub.ui.NavHostContainer
+import com.example.notehub.ui.dialogs.BottomSheetDateTimePickerDialog
+import com.example.notehub.ui.dialogs.DateTimePickerDialog
+import com.example.notehub.ui.dialogs.TimePickerDialog
 import com.example.notehub.ui.theme.NoteHubTheme
 import com.example.notehub.utils.FileUtils
 import com.example.notehub.utils.NotificationUtils
@@ -39,12 +42,6 @@ class MainActivity : ComponentActivity() {
         NotificationUtils.createChannel(this)
         NotificationUtils.requestPermission(this)
 
-        val calendar = Calendar.getInstance().apply {
-            add(Calendar.SECOND, 5)
-        }
-
-        NotificationUtils.setReminder(this, calendar, "Работай, сучка")
-
         setContent {
             NoteHubTheme(
                 darkTheme = true,
@@ -55,6 +52,7 @@ class MainActivity : ComponentActivity() {
                     .safeDrawingPadding()
                 ){
                     NavHostContainer()
+                    BottomSheetDateTimePickerDialog()
                 }
             }
         }

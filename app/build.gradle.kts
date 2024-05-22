@@ -52,12 +52,15 @@ android {
 }
 
 dependencies {
+    //UI
+    implementation(libs.composedatepicker)
     //google auth
     implementation(libs.bundles.google.credentials)
     //DataStore
     implementation(libs.androidx.datastore.preferences)
     //Dagger
     implementation(libs.bundles.dagger.hilt)
+    implementation(libs.material)
     kapt(libs.bundles.dagger.compiler)
     //Documentation
     dokkaPlugin(libs.android.documentation.plugin)
