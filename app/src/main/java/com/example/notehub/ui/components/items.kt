@@ -5,7 +5,6 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -46,11 +44,11 @@ import com.example.notehub.constants.FILE_ITEMS_BETWEEN_PADDING
 import com.example.notehub.constants.FILE_ITEM_HEIGHT
 import com.example.notehub.constants.FILE_ITEM_RADIUS
 import com.example.notehub.constants.ICON_LARGE
-import com.example.notehub.constants.ICON_MEDIUM
 import com.example.notehub.constants.NOTE_ITEM_HEIGHT
 import com.example.notehub.constants.NOTE_ITEM_RADIUS
 import com.example.notehub.constants.NOTE_ITEM_WIDTH
-import com.example.notehub.constants.Note_ITEM_HORIZONTAL_PADDING
+import com.example.notehub.constants.NOTE_ITEM_HORIZONTAL_PADDING
+import com.example.notehub.utils.DimensCalculator
 
 
 @Composable
@@ -115,9 +113,9 @@ fun NoteItem(title: String,
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
-            .width(NOTE_ITEM_WIDTH)
+            .size(NOTE_ITEM_WIDTH, NOTE_ITEM_HEIGHT)
             .clip(
-                shape = RoundedCornerShape(NOTE_ITEM_RADIUS)
+                shape = RoundedCornerShape(DimensCalculator.calculateRadius(NOTE_ITEM_WIDTH))
             )
             .background(MaterialTheme.colorScheme.surface)
     ) {
@@ -126,8 +124,9 @@ fun NoteItem(title: String,
             fontSize = 20.sp,
             fontWeight = FontWeight(600),
             color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = Note_ITEM_HORIZONTAL_PADDING, vertical = 12.dp)
+            modifier = Modifier.fillMaxWidth().padding(horizontal = NOTE_ITEM_HORIZONTAL_PADDING, vertical = 12.dp)
         )
+
         Text(
             text = noteText,
             fontSize = 14.sp,

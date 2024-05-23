@@ -7,6 +7,7 @@ import com.example.notehub.constants.FOLDER_MAIN
 import com.example.notehub.constants.FOLDER_TEMPLATE
 import com.example.notehub.constants.FOLDER_TRASH
 import java.io.File
+import java.io.IOException
 
 object FileUtils {
     val ROOT_PATH = "${Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)}/${FOLDER_MAIN}"
@@ -37,6 +38,32 @@ object FileUtils {
             } else {
                 Log.e(TAG, "Failed to create directory")
             }
+        }
+    }
+
+    /**
+     * Creates file
+     * @param parent: Parent directory path
+     * @param fileName: File name which will be created
+     */
+    fun createFile(parent: String = ROOT_PATH, fileName: String): Boolean {
+        val file = File(parent, fileName)
+        return try {
+            if (file.exists()) {
+                Log.w(TAG, "File already exists: ${file.absolutePath}")
+                false
+            } else {
+                if (file.createNewFile()) {
+                    Log.d(TAG, "File created at ${file.absolutePath}")
+                    true
+                } else {
+                    Log.e(TAG, "Failed to create file at $parent")
+                    false
+                }
+            }
+        } catch (e: IOException) {
+            Log.e(TAG, "Error creating file at $parent", e)
+            false
         }
     }
 

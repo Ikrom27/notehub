@@ -8,10 +8,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.notehub.ui.screens.EditorScreen
 import com.example.notehub.ui.screens.MainScreen
-import com.example.notehub.ui.screens.NoteListScreen
+import com.example.notehub.ui.screens.NotesScreen
 import com.example.notehub.ui.screens.SettingsScreen
-import com.example.notehub.utils.FileUtils
-import com.example.notehub.utils.addPath
 
 @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
 @Composable
@@ -45,7 +43,7 @@ fun NavHostContainer(){
             if (path == null){
                 navController.popBackStack()
             } else {
-                NoteListScreen(navController, path)
+                NotesScreen(navController, path)
             }
         }
     }
