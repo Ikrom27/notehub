@@ -26,6 +26,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -45,8 +46,15 @@ import com.example.notehub.ui.components.SelectableButton
 fun EditorBar(
     title: String,
     isEditMode: Boolean,
-    onEditClick: () -> Unit
+    onEditClick: () -> Unit,
+    onMoreClick: () -> Unit
 ) {
+    var timePickerState by remember { mutableStateOf(false) }
+
+    if (timePickerState) {
+        onMoreClick()
+    }
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -73,7 +81,9 @@ fun EditorBar(
             Spacer(modifier = Modifier.width(8.dp))
             IconButton(
                 modifier = Modifier.size(44.dp),
-                onClick = { }
+                onClick = {
+                    onMoreClick()
+                }
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_more),
@@ -109,7 +119,6 @@ fun CustomTopAppBar() {
                 onValueChange = { searchText = it },
                 modifier = Modifier
                 .fillMaxWidth()
-                //.height(43.dp)
                 .padding(end = 20.dp)
                 ,
                 leadingIcon = { Icon(Icons.Filled.Search, contentDescription = "leadingIcon") },
@@ -118,7 +127,7 @@ fun CustomTopAppBar() {
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
                 keyboardActions = KeyboardActions(onSearch = {
-                    // Обработка поискового запроса
+
                 }),
                 colors = TextFieldDefaults.colors(
                     focusedIndicatorColor = borderColor,

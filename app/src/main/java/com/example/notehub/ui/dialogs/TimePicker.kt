@@ -42,7 +42,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomSheetDateTimePickerDialog(
-
+    name: String,
 ) {
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
@@ -56,7 +56,7 @@ fun BottomSheetDateTimePickerDialog(
             },
             sheetState = sheetState
         ) {
-            DateTimePickerDialog() {
+            DateTimePickerDialog(name) {
                 scope.launch { sheetState.hide() }.invokeOnCompletion {
                     if (!sheetState.isVisible) {
                         showBottomSheet = false
@@ -73,6 +73,7 @@ fun BottomSheetDateTimePickerDialog(
 
 @Composable
 fun DateTimePickerDialog(
+    name: String,
     dismiss: () -> Unit
 ) {
     var isDateSelected by remember { mutableStateOf(false) }
@@ -94,7 +95,7 @@ fun DateTimePickerDialog(
             TimePickerDialog {
                 isTimeSelected = true
                 remainderDateTime?.set(Calendar.HOUR_OF_DAY, it.get(Calendar.MINUTE), it.get(Calendar.SECOND))
-                NotificationUtils.setReminder(context, remainderDateTime!!, "Hello world!")
+                NotificationUtils.setReminder(context, remainderDateTime!!, name)
             }
         }
         if (isDateSelected && isTimeSelected){
