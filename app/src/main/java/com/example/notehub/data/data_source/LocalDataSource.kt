@@ -7,6 +7,7 @@ import com.example.notehub.constants.FOLDER_TRASH
 import com.example.notehub.utils.FileUtils
 import com.example.notehub.utils.addPath
 import java.io.File
+import java.io.IOException
 
 /**
  * A class responsible for providing access to local files and directories.
@@ -44,6 +45,18 @@ class LocalDataSource {
             }
         }
         return subdirectories
+    }
+
+    fun saveFile(dirName: String, fileName: String, content: String): Boolean {
+        val correctedFileName = if (fileName.endsWith(".md")) fileName else "$fileName.md"
+        val file = File(ROOT_PATH.addPath(dirName), correctedFileName)
+        return try {
+            file.writeText(content)
+            true
+        } catch (e: IOException) {
+            e.printStackTrace()
+            false
+        }
     }
 
     /**

@@ -20,4 +20,8 @@ class MainRepository @Inject constructor(
     fun getDefaultFolders(): List<File>{
         return localDataSource.getDefaultFolders()
     }
+
+    fun saveFile(dirName: String, fileName: String, content: String) {
+        localDataSource.saveFile(dirName, fileName, content)
+    }
 }

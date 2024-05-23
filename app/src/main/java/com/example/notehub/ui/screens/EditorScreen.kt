@@ -9,6 +9,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -17,11 +19,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.font.Typeface
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.res.ResourcesCompat
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.navigation.NavController
 import com.example.notehub.R
 import com.example.notehub.constants.MAIN_HORIZONTAL_PADDING
@@ -29,8 +35,10 @@ import com.example.notehub.ui.bars.EditorBar
 import com.example.notehub.ui.components.EditPanel
 import com.example.notehub.utils.FileUtils
 import com.example.notehub.utils.addPath
+import com.example.notehub.viewmodels.EditorViewModel
 import com.ikrom.twain.MarkdownEditor
 import com.ikrom.twain.MarkdownText
+import kotlinx.coroutines.delay
 import java.io.File
 
 @SuppressLint("ResourceType", "UnusedMaterial3ScaffoldPaddingParameter")
@@ -38,7 +46,8 @@ import java.io.File
 fun EditorScreen(
     navController: NavController,
     dirName: String,
-    fileName: String
+    fileName: String,
+    viewModel: EditorViewModel = hiltViewModel()
 ) {
     val file = File(FileUtils.ROOT_PATH.addPath(dirName).addPath(fileName))
     var isEditableMode by remember { mutableStateOf(false) }
@@ -46,6 +55,9 @@ fun EditorScreen(
         mutableStateOf(TextFieldValue(file.readText()))
     }
 
+    AutoSave(textFieldValue){
+        viewModel.saveFile(dirName, fileName, textFieldValue.text)
+    }
 
     Box {
         Scaffold(
@@ -114,5 +126,31 @@ fun DisplayMarkDown(
                 .fillMaxWidth()
                 .padding(horizontal = MAIN_HORIZONTAL_PADDING),
         )
+    }
+}
+
+@Composable
+fun AutoSave(
+    textFieldValue: TextFieldValue,
+    save: () -> Unit
+){
+    val lifecycle = LocalLifecycleOwner.current.lifecycle
+
+    DisposableEffect(LocalLifecycleOwner.current) {
+        val lifecycleObserver = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_PAUSE) {
+                save()
+            }
+        }
+        lifecycle.addObserver(lifecycleObserver)
+
+        onDispose {
+            lifecycle.removeObserver(lifecycleObserver)
+        }
+    }
+
+    LaunchedEffect(textFieldValue) {
+        delay(3000)
+        save()
     }
 }
