@@ -83,4 +83,38 @@ object FileUtils {
             return false
         }
     }
+
+    /**
+     * Move file or directory
+     * @param oldParent: the current parent directory of the file or directory
+     * @param newParent: the new parent directory for the file or directory
+     * @param name: the name of the file or directory to move
+     */
+    fun moveFile(oldParent: String, newParent: String, name: String): Boolean {
+        val oldFile = File(oldParent, name)
+        val newFile = File(newParent, name)
+
+        if (oldFile.exists()) {
+            createDirectory(newParent, "")  // Ensure the new directory exists
+            if (oldFile.renameTo(newFile)) {
+                Log.d(TAG, "File or directory $name moved from $oldParent to $newParent")
+                return true
+            } else {
+                Log.e(TAG, "Failed to move file or directory $name from $oldParent to $newParent")
+                return false
+            }
+        } else {
+            Log.e(TAG, "File or directory $name does not exist in $oldParent")
+            return false
+        }
+    }
+
+    /**
+     * Move file or directory to trash
+     * @param parent: the current parent directory of the file or directory
+     * @param name: the name of the file or directory to move to trash
+     */
+    fun moveToTrash(parent: String = ROOT_PATH, name: String): Boolean {
+        return moveFile(parent, "$ROOT_PATH/$FOLDER_TRASH", name)
+    }
 }
