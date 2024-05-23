@@ -36,6 +36,7 @@ import com.example.notehub.R
 import com.example.notehub.constants.MAIN_HORIZONTAL_PADDING
 import com.example.notehub.ui.bars.EditorBar
 import com.example.notehub.ui.components.EditPanel
+import com.example.notehub.ui.dialogs.DateTimePickerDialog
 import com.example.notehub.utils.FileUtils
 import com.example.notehub.utils.addPath
 import com.example.notehub.viewmodels.EditorViewModel
@@ -45,6 +46,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
 
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("ResourceType", "UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun EditorScreen(
@@ -80,6 +82,10 @@ fun EditorScreen(
 
             }
         }
+    }
+
+    AutoSave(textFieldValue) {
+        viewModel.saveFile(dirName, fileName, textFieldValue.text)
     }
 
     Box {
@@ -118,11 +124,6 @@ fun EditorScreen(
             Log.d("EditPanel", "Selection ${textFieldValue.selection.start} ${textFieldValue.selection.end}")
         }
     }
-}
-
-@Composable
-fun DateTimePickerDialog(fileName: String, content: () -> DisposableHandle) {
-
 }
 
 @Composable
