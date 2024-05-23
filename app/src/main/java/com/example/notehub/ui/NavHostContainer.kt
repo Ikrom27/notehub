@@ -24,7 +24,7 @@ fun NavHostContainer(){
             MainScreen(navController)
         }
         composable("SettingsScreen"){
-            SettingsScreen(navController)
+            SettingsScreen()
         }
         composable("EditorScreen/{dir}/{file}"){
             val dirName = it.arguments?.getString("dir")
