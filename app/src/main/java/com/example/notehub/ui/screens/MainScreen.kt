@@ -1,5 +1,8 @@
 package com.example.notehub.ui.screens
 
+import android.content.Context
+import android.os.VibrationEffect
+import android.os.Vibrator
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -19,9 +22,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.notehub.constants.FILE_ITEMS_BETWEEN_PADDING
@@ -44,9 +49,7 @@ fun MainScreen(
     navController: NavController,
     viewModel: MainViewModel = hiltViewModel()
 ) {
-
     var showCreateFolderDialog by remember { mutableStateOf(false) }
-
     var currentPath by remember { mutableStateOf(FileUtils.ROOT_PATH) }
 
     viewModel.updateFilesList(currentPath)
@@ -137,15 +140,18 @@ fun FolderItemWithMenu(
 ){
     var expanded by remember { mutableStateOf(false) }
     var pressOffset by remember { mutableStateOf(DpOffset.Zero) }
+    val context = LocalContext.current
+    val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
     Card(
         modifier = Modifier
             .pointerInput(true) {
                 detectTapGestures(
-                    onPress = { onItemClick() },
+                    onTap = { onItemClick() },
                     onLongPress = {offset ->
                         pressOffset = DpOffset(offset.x.toDp(), offset.y.toDp() - FILE_ITEM_HEIGHT)
                         expanded = true
+                        vibrator.vibrate(VibrationEffect.createOneShot(10, VibrationEffect.DEFAULT_AMPLITUDE))
                     }
                 )
             }
