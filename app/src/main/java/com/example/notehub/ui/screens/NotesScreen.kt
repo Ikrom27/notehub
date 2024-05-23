@@ -2,12 +2,9 @@ package com.example.notehub.ui.screens
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -17,11 +14,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.notehub.R
+import com.example.notehub.constants.FOLDER_FAVORITE
+import com.example.notehub.constants.LABEL_ADD_TO_FAVORITE
+import com.example.notehub.constants.LABEL_DELETE
+import com.example.notehub.constants.LABEL_MOVE
 import com.example.notehub.constants.LABEL_RENAME
+import com.example.notehub.constants.LABEL_SET_REMINDER
 import com.example.notehub.constants.MAIN_HORIZONTAL_PADDING
 import com.example.notehub.constants.NOTE_ITEM_WIDTH
 import com.example.notehub.extansions.getNameWithoutExtension
@@ -112,17 +113,36 @@ fun NotesList(
                         }
                     )
                     DropdownMenuItem(
-                        text = { Text(LABEL_RENAME) },
+                        text = { Text(LABEL_DELETE) },
                         onClick = {
-                            showRenameDialog = true
+                            FileUtils.moveToTrash(FileUtils.ROOT_PATH.addPath(dirName), note.name)
                             updateList()
                             hideMenu()
                         }
                     )
                     DropdownMenuItem(
-                        text = { Text(LABEL_RENAME) },
+                        text = { Text(LABEL_SET_REMINDER) },
                         onClick = {
-                            showRenameDialog = true
+                            //TODO: Set reminder
+                            updateList()
+                            hideMenu()
+                        }
+                    )
+                    DropdownMenuItem(
+                        text = { Text(LABEL_MOVE) },
+                        onClick = {
+                            //TODO: make move
+                            updateList()
+                            hideMenu()
+                        }
+                    )
+                    DropdownMenuItem(
+                        text = { Text(LABEL_ADD_TO_FAVORITE) },
+                        onClick = {
+                            FileUtils.moveFile(
+                                FileUtils.ROOT_PATH.addPath(dirName),
+                                FileUtils.ROOT_PATH.addPath(FOLDER_FAVORITE),
+                                note.name)
                             updateList()
                             hideMenu()
                         }

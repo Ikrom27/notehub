@@ -14,6 +14,9 @@ const val LABEL_CONFIRM = "Confirm"
 const val LABEL_DISMISS = "Dismiss"
 const val LABEL_DELETE = "Delete"
 const val LABEL_RENAME = "Rename"
+const val LABEL_SET_REMINDER = "Set a reminder"
+const val LABEL_MOVE = "Move"
+const val LABEL_ADD_TO_FAVORITE = "Add to favorite"
 
 //TEXT
 const val TEXT_INCORRECT_FOLDER_NAME = "Incorrect folder name!"
