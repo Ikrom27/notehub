@@ -1,16 +1,10 @@
 package com.example.notehub.ui.screens
 
-import android.content.Context
-import android.os.VibrationEffect
-import android.os.Vibrator
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Card
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -21,15 +15,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.notehub.constants.FILE_ITEMS_BETWEEN_PADDING
-import com.example.notehub.constants.FILE_ITEM_HEIGHT
 import com.example.notehub.constants.LABEL_DELETE
 import com.example.notehub.constants.LABEL_RENAME
 import com.example.notehub.constants.MAIN_HORIZONTAL_PADDING
@@ -37,8 +27,9 @@ import com.example.notehub.constants.TITLE_SIZE
 import com.example.notehub.constants.TITLE_WEIGHT
 import com.example.notehub.constants.YOUR_FOLDER
 import com.example.notehub.ui.components.AddIcon
-import com.example.notehub.ui.components.SetNameDialog
 import com.example.notehub.ui.components.FolderItem
+import com.example.notehub.ui.components.SetNameDialog
+import com.example.notehub.ui.components.WithMenuItem
 import com.example.notehub.utils.FileUtils
 import com.example.notehub.viewmodels.MainViewModel
 import java.io.File
@@ -51,7 +42,6 @@ fun MainScreen(
     var showCreateFolderDialog by remember { mutableStateOf(false) }
     var showRenameDialog by remember { mutableStateOf(false) }
     var currentPath by remember { mutableStateOf(FileUtils.ROOT_PATH) }
-    var currentFileName by remember { mutableStateOf("") }
 
     viewModel.updateFilesList(currentPath)
 
@@ -73,12 +63,21 @@ fun MainScreen(
             DropdownMenuItem(
                 text = { Text(LABEL_RENAME) },
                 onClick = {
-                    currentFileName = file.name
                     showRenameDialog = true
                     viewModel.updateFilesList(currentPath)
                     hideMenu()
                 }
             )
+
+            if (showRenameDialog) {
+                SetNameDialog(
+                    defaultName = file.name,
+                    onDismissRequest = {showRenameDialog = false},
+                    confirmButton = {
+                        FileUtils.renameTo(currentPath, file.name, it)
+                    }
+                )
+            }
         }
     )
 
@@ -88,16 +87,6 @@ fun MainScreen(
             confirmButton = {
                 FileUtils.createDirectory(currentPath, it)
                 viewModel.updateFilesList()
-            }
-        )
-    }
-
-    if (showRenameDialog) {
-        SetNameDialog(
-            defaultName = currentFileName,
-            onDismissRequest = {showRenameDialog = false},
-            confirmButton = {
-                FileUtils.renameTo(currentPath, currentFileName, it)
             }
         )
     }
@@ -135,11 +124,16 @@ fun FoldersList(
             )
         }
         items(items = directories) { file ->
-            FolderItemWithMenu(
-                name = file.name,
+            WithMenuItem(
                 onItemClick = { onItemClick(file) },
-                dropDownItems = {
-                    menuItems(file) {it()}
+                item = {
+                    FolderItem(
+                        title = file.name,
+                        counter = 0
+                    )
+                },
+                dropDownItems = {hideMenu ->
+                    menuItems(file, hideMenu)
                 }
             )
         }
@@ -147,46 +141,6 @@ fun FoldersList(
             AddIcon(onClick = {
                 onAddClick()
             })
-        }
-    }
-}
-
-@Composable
-fun FolderItemWithMenu(
-    name: String,
-    onItemClick: () -> Unit,
-    dropDownItems: @Composable (onClick: () -> Unit) -> Unit
-){
-    var expanded by remember { mutableStateOf(false) }
-    var pressOffset by remember { mutableStateOf(DpOffset.Zero) }
-    val context = LocalContext.current
-    val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-
-    Card(
-        modifier = Modifier
-            .pointerInput(true) {
-                detectTapGestures(
-                    onTap = { onItemClick() },
-                    onLongPress = {offset ->
-                        pressOffset = DpOffset(offset.x.toDp(), offset.y.toDp() - FILE_ITEM_HEIGHT)
-                        expanded = true
-                        vibrator.vibrate(VibrationEffect.createOneShot(10, VibrationEffect.DEFAULT_AMPLITUDE))
-                    }
-                )
-            }
-    ) {
-        FolderItem(
-            title = name,
-            counter = 0
-        )
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false },
-            offset = pressOffset
-        ) {
-            dropDownItems() {
-                expanded = false
-            }
         }
     }
 }
