@@ -6,21 +6,24 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.text.font.Typeface
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -39,6 +42,7 @@ import com.example.notehub.viewmodels.EditorViewModel
 import com.ikrom.twain.MarkdownEditor
 import com.ikrom.twain.MarkdownText
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.io.File
 
 @SuppressLint("ResourceType", "UnusedMaterial3ScaffoldPaddingParameter")
@@ -55,8 +59,27 @@ fun EditorScreen(
         mutableStateOf(TextFieldValue(file.readText()))
     }
 
-    AutoSave(textFieldValue){
-        viewModel.saveFile(dirName, fileName, textFieldValue.text)
+    val sheetState = rememberModalBottomSheetState()
+    val scope = rememberCoroutineScope()
+    var showBottomSheet by remember { mutableStateOf(false) }
+
+    if (showBottomSheet) {
+        ModalBottomSheet(
+            contentColor = MaterialTheme.colorScheme.surface,
+            onDismissRequest = {
+                showBottomSheet = false
+            },
+            sheetState = sheetState
+        ) {
+            DateTimePickerDialog(fileName) {
+                scope.launch { sheetState.hide() }.invokeOnCompletion {
+                    if (!sheetState.isVisible) {
+                        showBottomSheet = false
+                    }
+                }
+
+            }
+        }
     }
 
     Box {
@@ -64,10 +87,14 @@ fun EditorScreen(
             topBar = {
                 EditorBar(
                     title = fileName,
-                    isEditMode = isEditableMode
-                ) {
-                    isEditableMode = !isEditableMode
-                }
+                    isEditMode = isEditableMode,
+                    onEditClick = {
+                        isEditableMode = !isEditableMode
+                                  },
+                    onMoreClick = {
+                        showBottomSheet = true
+                    }
+                )
             },
 
             ) {
@@ -91,6 +118,11 @@ fun EditorScreen(
             Log.d("EditPanel", "Selection ${textFieldValue.selection.start} ${textFieldValue.selection.end}")
         }
     }
+}
+
+@Composable
+fun DateTimePickerDialog(fileName: String, content: () -> DisposableHandle) {
+
 }
 
 @Composable
