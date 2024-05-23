@@ -19,11 +19,12 @@ import com.example.notehub.constants.TEXT_INCORRECT_FOLDER_NAME
 import com.example.notehub.utils.isValidInput
 
 @Composable
-fun CreateNewFolderDialog(
+fun SetNameDialog(
+    defaultName: String = "",
     onDismissRequest: () -> Unit,
     confirmButton: (String) -> Unit
 ) {
-    var userInput by remember { mutableStateOf("") }
+    var userInput by remember { mutableStateOf(defaultName) }
     var showErrorText by remember { mutableStateOf(false) }
     AlertDialog(
         title = {
