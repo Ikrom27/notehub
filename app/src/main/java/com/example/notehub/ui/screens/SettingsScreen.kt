@@ -42,7 +42,6 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.example.notehub.constants.AUTHENTICATION
 import com.example.notehub.constants.AUTHORS
 import com.example.notehub.constants.ENTER_ARRAY
@@ -52,17 +51,18 @@ import com.example.notehub.constants.SWITCH_THEME
 import com.example.notehub.viewmodels.SettingsViewModel
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.security.MessageDigest
 import java.util.UUID
 
-
 @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
 @Composable
 fun SettingsScreen(
-    navController: NavController,
+   // navController: NavController,
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
@@ -82,13 +82,24 @@ fun SettingsScreen(
             isDarkTheme = isDarkTheme,
             onThemeSwitched = { isChecked -> isDarkTheme = isChecked }
         )
-        if (isLoggedIn.value) {
-            Text(text = "ТЫ блИн хорош, вошел в Приложуху через гуГлЧанСкий!!1!")
+        //if (isLoggedIn.value) {
+        if (FirebaseAuth.getInstance().currentUser != null) {
+            Text(text = "ТЫ блИн хорош, вошел в Приложуху через гуГлЧанСкий!!1!",
+                color = MaterialTheme.colorScheme.primary,
+                fontSize = 20.sp,
+                fontWeight = FontWeight(600),)
+            FirebaseAuth.getInstance().currentUser?.uid?.let { uid ->
+                //viewModel.uploadToStorage(uid)
+                viewModel.downloadFromStorage(uid)
+            }
         } else {
             Authorization(onLoginClick = {
                 coroutineScope.launch {
                     setSignIn(context, coroutineScope)
                     isLoggedIn.value = isLoggedIn(context)
+                    FirebaseAuth.getInstance().currentUser?.uid?.let { uid ->
+                        viewModel.uploadToStorage(uid)
+                    }
                 }
             })
         }
@@ -127,7 +138,7 @@ fun setSignIn(context: Context, coroutineScope: CoroutineScope) {
 
     val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
         .setFilterByAuthorizedAccounts(false)
-        .setServerClientId("1019679628253-5a254upmo8m62v4c7tn2g2pi97lptldq.apps.googleusercontent.com")
+        .setServerClientId("918902637511-bcu3r4ccisspl6k5jf2udmj5hsovus3n.apps.googleusercontent.com")
         .setNonce(hashedNonce)
         .build()
 
@@ -148,6 +159,17 @@ fun setSignIn(context: Context, coroutineScope: CoroutineScope) {
             Log.i("EBANIY GOOGLE", googleIdToken)
             Toast.makeText(context, "You are signed in!", Toast.LENGTH_SHORT).show()
 
+            val firebaseCredential = GoogleAuthProvider.getCredential(googleIdToken, null)
+            FirebaseAuth.getInstance().signInWithCredential(firebaseCredential)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Log.i("FirebaseAuth", "signInWithCredential:success")
+                        Toast.makeText(context, "You are signed in!", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Log.e("FirebaseAuth", "signInWithCredential:failure", task.exception)
+                        Toast.makeText(context, "Failed to sign in!", Toast.LENGTH_SHORT).show()
+                    }
+                }
             setLoggedIn(context, true)
         } catch (e: Exception) {
             Log.e("LoginError", "Failed to log in", e)

@@ -2,7 +2,6 @@ package com.example.notehub
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
@@ -18,9 +17,6 @@ import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Modifier
 import com.example.notehub.ui.NavHostContainer
-import com.example.notehub.ui.dialogs.BottomSheetDateTimePickerDialog
-import com.example.notehub.ui.dialogs.DateTimePickerDialog
-import com.example.notehub.ui.dialogs.TimePickerDialog
 import com.example.notehub.ui.theme.NoteHubTheme
 import com.example.notehub.utils.FileUtils
 import com.example.notehub.utils.NotificationUtils
@@ -28,6 +24,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
     @SuppressLint("ResourceType")
     @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     override fun onCreate(savedInstanceState: Bundle?) {

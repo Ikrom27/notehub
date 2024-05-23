@@ -24,4 +24,12 @@ class MainRepository @Inject constructor(
     fun saveFile(dirName: String, fileName: String, content: String) {
         localDataSource.saveFile(dirName, fileName, content)
     }
+
+    fun uploadToStorage(userUid: String){
+        return googleDataSource.uploadFileToFirebaseStorage(userUid)
+    }
+
+    fun downloadFromStorage(userUid: String){
+        return googleDataSource.downloadFilesFromFirebaseStorage(userUid)
+    }
 }

@@ -5,6 +5,7 @@ plugins {
     kotlin("kapt")
     id("org.jetbrains.dokka") version "1.9.20"
     id("com.google.dagger.hilt.android")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -52,6 +53,9 @@ android {
 }
 
 dependencies {
+    //Firebase
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.storage.ktx)
     //UI
     implementation(libs.composedatepicker)
     //google auth
@@ -60,6 +64,7 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
     //Dagger
     implementation(libs.bundles.dagger.hilt)
+    implementation(libs.firebase.storage)
     implementation(libs.material)
     kapt(libs.bundles.dagger.compiler)
     //Documentation
