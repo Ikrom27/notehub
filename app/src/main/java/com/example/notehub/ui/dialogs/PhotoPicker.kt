@@ -58,18 +58,6 @@ fun PhotoGalleryBottomSheetContent(onPhotoClicked: (String) -> Unit) {
 
 }
 
-@Composable
-fun imageFromUri(uri: String): ImageBitmap? {
-    val context = LocalContext.current
-    val contentResolver = context.contentResolver
-    val bitmap = remember(uri) {
-        val imageUri = uri.toUri()
-        val bitmap = contentResolver.loadThumbnail(imageUri, Size(480, 480), null)
-        bitmap?.asImageBitmap()
-    }
-    return bitmap
-}
-
 fun getImageUrls(contentResolver: ContentResolver): List<String> {
     val imageUrls = mutableListOf<String>()
 
