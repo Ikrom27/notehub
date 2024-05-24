@@ -339,7 +339,7 @@ object MarkdownUtils {
 
     private fun getLineStartsIndex(text: String, range: TextRange, endMarker: Char? = null): Pair<Int, Int>{
         var start = range.start
-        while (start >= 0 && text[start] != '\n'){
+        while (start > 0 && text[start-1  ] != '\n'){
             start--
         }
         if (text[start] == '\n'){

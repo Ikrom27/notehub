@@ -88,6 +88,11 @@ val EDIT_PANEL_BUTTONS = listOf(
         icon = R.drawable.ic_code,
         onClick = { value, selected -> MarkdownUtils.toggleCode(value, selected) },
         selected = { MarkdownUtils.isCode(it) }
+    ),
+    EditPanelButton(
+        icon = R.drawable.ic_marked_list,
+        onClick = { value, _ -> MarkdownUtils.makeMarkedList(value) },
+        selected = { false }
     )
 )
 
