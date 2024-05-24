@@ -54,4 +54,24 @@ class MarkDownUtilsTest {
             result
         )
     }
+
+    @Test
+    fun makeMarkedListTest1() {
+        val text = "hello world \nI love you!"
+        val value = TextFieldValue(text, TextRange(text.length-2))
+        val result = MarkdownUtils.makeMarkedList(value).text
+        assertEquals("hello world \n* I love you!",
+            result
+        )
+    }
+
+    @Test
+    fun makeMarkedListTest2() {
+        val text = "hello world \nI love you!\nAnd i also love you!"
+        val value = TextFieldValue(text, TextRange(18, text.length-2))
+        val result = MarkdownUtils.makeMarkedList(value).text
+        assertEquals("hello world \n* I love you!\n* And i also love you!",
+            result
+        )
+    }
 }
