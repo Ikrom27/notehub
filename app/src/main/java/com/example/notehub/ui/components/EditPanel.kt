@@ -15,6 +15,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -42,6 +46,10 @@ fun EditPanel(
     textFieldValue: TextFieldValue,
     onTextChange: (TextFieldValue) -> Unit
 ) {
+    var showLinkDialog by remember {
+        mutableStateOf(false)
+    }
+
     Column(
         modifier = modifier
             .imePadding()
@@ -66,10 +74,25 @@ fun EditPanel(
                 }
             }
             item {
+                IconButton(onClick = { showLinkDialog = true}) {
+                    Icon(painter = painterResource(
+                        id = R.drawable.ic_link),
+                        tint = MaterialTheme.colorScheme.primary,
+                        contentDescription = null,
+                        modifier = Modifier.height(DimensCalculator.calculateIconSize(ICON_MEDIUM_PLUS))
+                    )
+                }
                 FontSizeButton(onItemClick = {headerNum ->
                     onTextChange(MarkdownUtils.makeHeader(textFieldValue, headerNum))
                 })
             }
+        }
+    }
+    if (showLinkDialog){
+        SetNameDialog(onDismissRequest = {
+            showLinkDialog = false
+        }) {
+            onTextChange(MarkdownUtils.makeLink(textFieldValue, it))
         }
     }
 }

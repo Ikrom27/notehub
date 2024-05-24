@@ -25,19 +25,12 @@ fun SetNameDialog(
     confirmButton: (String) -> Unit
 ) {
     var userInput by remember { mutableStateOf(defaultName) }
-    var showErrorText by remember { mutableStateOf(false) }
     AlertDialog(
         title = {
             Text(text = LABEL_CREATE_NEW_FOLDER)
         },
         text = {
             Column {
-                if(showErrorText){
-                    Text(
-                        text = TEXT_INCORRECT_FOLDER_NAME,
-                        color = MaterialTheme.colorScheme.error
-                    )
-                }
                 OutlinedTextField(
                     label = { Text(text = LABEL_FOLDER_NAME) },
                     value = userInput,
@@ -63,14 +56,9 @@ fun SetNameDialog(
         confirmButton = {
             TextButton(
                 onClick = {
-                    if(isValidInput(userInput)){
-                        confirmButton(userInput)
-                        userInput = ""
-                        showErrorText = false
-                        onDismissRequest()
-                    } else {
-                        showErrorText = true
-                    }
+                    confirmButton(userInput)
+                    userInput = ""
+                    onDismissRequest()
                 }
             ) {
                 Text(LABEL_CONFIRM)
