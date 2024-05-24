@@ -6,13 +6,18 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -31,9 +36,11 @@ import com.example.notehub.ui.components.FloatingButton
 import com.example.notehub.ui.components.NoteItem
 import com.example.notehub.ui.components.SetNameDialog
 import com.example.notehub.ui.components.WithMenuItem
+import com.example.notehub.ui.dialogs.DateTimePickerDialog
 import com.example.notehub.utils.FileUtils
 import com.example.notehub.utils.addPath
 import com.example.notehub.viewmodels.NoteListViewModel
+import kotlinx.coroutines.launch
 import java.io.File
 
 
@@ -80,6 +87,7 @@ fun NotesScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NotesList(
     onItemClick: (File) -> Unit,
@@ -88,6 +96,10 @@ fun NotesList(
     updateList: () -> Unit
 ){
     var showRenameDialog by remember { mutableStateOf(false) }
+    val sheetState = rememberModalBottomSheetState()
+    val scope = rememberCoroutineScope()
+    var showBottomSheet by remember { mutableStateOf(false) }
+
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = NOTE_ITEM_WIDTH),
         horizontalArrangement = Arrangement.spacedBy(MAIN_HORIZONTAL_PADDING),
@@ -123,7 +135,7 @@ fun NotesList(
                     DropdownMenuItem(
                         text = { Text(LABEL_SET_REMINDER) },
                         onClick = {
-                            //TODO: Set reminder
+                            showBottomSheet = true
                             updateList()
                             hideMenu()
                         }
@@ -157,6 +169,24 @@ fun NotesList(
                         FileUtils.renameTo(dirName, note.name + ".md", it)
                     }
                 )
+            }
+            if (showBottomSheet) {
+                ModalBottomSheet(
+                    contentColor = MaterialTheme.colorScheme.surface,
+                    onDismissRequest = {
+                        showBottomSheet = false
+                    },
+                    sheetState = sheetState
+                ) {
+                    DateTimePickerDialog(note.getNameWithoutExtension()) {
+                        scope.launch { sheetState.hide() }.invokeOnCompletion {
+                            if (!sheetState.isVisible) {
+                                showBottomSheet = false
+                            }
+                        }
+
+                    }
+                }
             }
         }
     }

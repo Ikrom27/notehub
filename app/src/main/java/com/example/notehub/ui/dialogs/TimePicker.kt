@@ -39,38 +39,6 @@ import com.vsnappy1.timepicker.ui.model.TimePickerConfiguration
 import kotlinx.coroutines.launch
 
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun BottomSheetDateTimePickerDialog(
-    name: String,
-) {
-    val sheetState = rememberModalBottomSheetState()
-    val scope = rememberCoroutineScope()
-    var showBottomSheet by remember { mutableStateOf(true) }
-
-    if (showBottomSheet) {
-        ModalBottomSheet(
-            contentColor = MaterialTheme.colorScheme.surface,
-            onDismissRequest = {
-                showBottomSheet = false
-            },
-            sheetState = sheetState
-        ) {
-            DateTimePickerDialog(name) {
-                scope.launch { sheetState.hide() }.invokeOnCompletion {
-                    if (!sheetState.isVisible) {
-                        showBottomSheet = false
-                    }
-                }
-
-            }
-        }
-    }
-
-}
-
-
-
 @Composable
 fun DateTimePickerDialog(
     name: String,
@@ -78,8 +46,9 @@ fun DateTimePickerDialog(
 ) {
     var isDateSelected by remember { mutableStateOf(false) }
     var isTimeSelected by remember { mutableStateOf(false) }
-    var remainderDateTime by remember { mutableStateOf<Calendar?>(null) }
+    var remainderDateTime by remember { mutableStateOf<Calendar>(Calendar.getInstance()) }
     val context = LocalContext.current
+
     Column(
         modifier = Modifier
             .padding(vertical = 24.dp, horizontal = MAIN_HORIZONTAL_PADDING),
@@ -88,14 +57,18 @@ fun DateTimePickerDialog(
         if (!isDateSelected){
             DatePickerDialog {
                 isDateSelected = true
-                remainderDateTime = it
+                remainderDateTime.set(Calendar.YEAR, it.get(Calendar.YEAR))
+                remainderDateTime.set(Calendar.MONTH, it.get(Calendar.MONTH))
+                remainderDateTime.set(Calendar.DAY_OF_MONTH, it.get(Calendar.DAY_OF_MONTH))
             }
         }
         if(!isTimeSelected && isDateSelected){
             TimePickerDialog {
                 isTimeSelected = true
-                remainderDateTime?.set(Calendar.HOUR_OF_DAY, it.get(Calendar.MINUTE), it.get(Calendar.SECOND))
-                NotificationUtils.setReminder(context, remainderDateTime!!, name)
+                remainderDateTime.set(Calendar.HOUR_OF_DAY, it.get(Calendar.HOUR_OF_DAY))
+                remainderDateTime.set(Calendar.MINUTE, it.get(Calendar.MINUTE))
+                remainderDateTime.set(Calendar.SECOND, 0)
+                NotificationUtils.setReminder(context, remainderDateTime, name)
             }
         }
         if (isDateSelected && isTimeSelected){
@@ -109,14 +82,15 @@ fun TimePickerDialog(
     onTimeSelected: (Calendar) -> Unit
 ){
     val currentTime = Calendar.getInstance()
-    val reminderTime by remember { mutableStateOf(currentTime) }
+    val reminderTime = remember { Calendar.getInstance() }
+
     TimePicker(
         onTimeSelected = { hour, minute ->
             reminderTime.set(Calendar.HOUR_OF_DAY, hour)
             reminderTime.set(Calendar.MINUTE, minute)
             reminderTime.set(Calendar.SECOND, 0)
         },
-        is24Hour = false,
+        is24Hour = true,
         time = TimePickerTime(
             hour = currentTime.get(Calendar.HOUR_OF_DAY),
             minute = currentTime.get(Calendar.MINUTE),
@@ -144,12 +118,13 @@ fun DatePickerDialog(
     onDateSelected: (Calendar) -> Unit
 ){
     val currentDate = Calendar.getInstance()
-    val reminderDate by remember { mutableStateOf(currentDate) }
+    val reminderDate = remember { Calendar.getInstance() }
 
     val fromDate = DatePickerDate(
         year = currentDate.get(Calendar.YEAR),
         month = currentDate.get(Calendar.MONTH),
-        day = currentDate.get(Calendar.DAY_OF_MONTH))
+        day = currentDate.get(Calendar.DAY_OF_MONTH)
+    )
 
     DatePicker(
         onDateSelected = { year, month, day ->
@@ -158,7 +133,7 @@ fun DatePickerDialog(
             reminderDate.set(Calendar.DAY_OF_MONTH, day)
         },
         selectionLimiter = SelectionLimiter(
-            fromDate =fromDate
+            fromDate = fromDate
         ),
         configuration = DatePickerConfiguration.Builder()
             .dateTextStyle(
