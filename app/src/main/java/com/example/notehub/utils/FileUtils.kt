@@ -19,7 +19,7 @@ object FileUtils {
     fun generateDirectories(){
         createDirectory(ROOT_PATH, "")
         createDirectory(ROOT_PATH, FOLDER_FAVORITE)
-        createDirectory(ROOT_PATH, FOLDER_TEMPLATE)
+//        createDirectory(ROOT_PATH, FOLDER_TEMPLATE)
         createDirectory(ROOT_PATH, FOLDER_TRASH)
     }
 
