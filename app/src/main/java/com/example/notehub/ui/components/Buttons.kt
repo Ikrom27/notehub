@@ -22,7 +22,7 @@ import com.example.notehub.utils.DimensCalculator
 @Composable
 fun SelectableButton(
     icon: Int,
-    selected: Boolean,
+    selected: Boolean = false,
     size: Dp,
     onClick: () -> Unit,
 ){

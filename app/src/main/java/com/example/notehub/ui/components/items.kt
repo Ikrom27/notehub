@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.VibrationEffect
 import android.os.Vibrator
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,6 +39,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.PopupProperties
 import com.example.notehub.constants.ADD_ICON_TOP_PADDING
 import com.example.notehub.constants.ENTER_ARRAY
 import com.example.notehub.constants.FILE_ITEMS_BETWEEN_PADDING
@@ -92,7 +94,10 @@ fun FolderItem(
 @Composable
 fun AddIcon(onClick: () -> Unit){
     Box(
-        modifier = Modifier.fillMaxWidth().wrapContentHeight().padding(top = ADD_ICON_TOP_PADDING - FILE_ITEMS_BETWEEN_PADDING),
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .padding(top = ADD_ICON_TOP_PADDING - FILE_ITEMS_BETWEEN_PADDING),
         contentAlignment = Alignment.Center
     ) {
         IconButton(
@@ -124,7 +129,9 @@ fun NoteItem(title: String,
             fontSize = 20.sp,
             fontWeight = FontWeight(600),
             color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = NOTE_ITEM_HORIZONTAL_PADDING, vertical = 12.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = NOTE_ITEM_HORIZONTAL_PADDING, vertical = 12.dp)
         )
 
         Text(
@@ -133,7 +140,9 @@ fun NoteItem(title: String,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             maxLines = 5,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 6.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 6.dp)
         )
     }
 }
@@ -175,4 +184,26 @@ fun WithMenuItem(
     }
 }
 
+@Composable
+fun DropdownButton(
+    item: @Composable () -> Unit,
+    dropDownItems: @Composable (onClick: () -> Unit) -> Unit
+) {
+    var expanded by remember { mutableStateOf(false) }
+
+    Column {
+        Box(Modifier.clickable(onClick = {expanded=!expanded})){
+            item()
+        }
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            properties = PopupProperties(focusable = false)
+        ) {
+            dropDownItems {
+                expanded = false
+            }
+        }
+    }
+}
 

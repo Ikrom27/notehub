@@ -17,6 +17,10 @@ const val LABEL_RENAME = "Rename"
 const val LABEL_SET_REMINDER = "Set a reminder"
 const val LABEL_MOVE = "Move"
 const val LABEL_ADD_TO_FAVORITE = "Add to favorite"
+const val LABEL_HEADER1 = "Header 1"
+const val LABEL_HEADER2 = "Header 2"
+const val LABEL_HEADER3 = "Header 3"
+const val LABEL_NONE = "None"
 
 //TEXT
 const val TEXT_INCORRECT_FOLDER_NAME = "Incorrect folder name!"

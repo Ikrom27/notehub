@@ -1,6 +1,5 @@
 package com.example.notehub.utils
 
-import android.util.Log
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 
@@ -140,6 +139,22 @@ object MarkdownUtils {
             val tmp = newEnd
             newEnd = getLineStartsIndex(text, TextRange(newEnd-2)).first
             newText = "* " + text.substring(newEnd, tmp) + newText
+        }
+        newText = text.substring(0, start) + newText + text.substring(end, text.length)
+        val newSelection = TextRange(end)
+        return TextFieldValue(newText, newSelection)
+    }
+
+    fun makeHeader(value: TextFieldValue, titleLevel: Int): TextFieldValue {
+        val text = value.text
+        val (start, end) = getLineStartsIndex(text, value.selection, '\n')
+        var newEnd = end
+        var newText = text.substring(newEnd, end)
+        while (newEnd != start){
+            val tmp = newEnd
+            newEnd = getLineStartsIndex(text, TextRange(newEnd-2)).first
+            val cleanedLineText = text.substring(newEnd, tmp).dropWhile { it == '#' || it.isWhitespace()}
+            newText = "#".repeat(titleLevel) + " " + cleanedLineText + newText
         }
         newText = text.substring(0, start) + newText + text.substring(end, text.length)
         val newSelection = TextRange(end)
@@ -339,7 +354,7 @@ object MarkdownUtils {
 
     private fun getLineStartsIndex(text: String, range: TextRange, endMarker: Char? = null): Pair<Int, Int>{
         var start = range.start
-        while (start > 0 && text[start-1  ] != '\n'){
+        while (start > 0 && text[start-1  ] != '\n' || start == text.length){
             start--
         }
         if (text[start] == '\n'){

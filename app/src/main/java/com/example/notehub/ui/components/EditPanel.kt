@@ -9,15 +9,25 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import com.example.notehub.R
 import com.example.notehub.constants.EDIT_PANEL_HEIGHT
 import com.example.notehub.constants.ICON_MEDIUM_PLUS
+import com.example.notehub.constants.LABEL_HEADER1
+import com.example.notehub.constants.LABEL_HEADER2
+import com.example.notehub.constants.LABEL_HEADER3
+import com.example.notehub.constants.LABEL_NONE
 import com.example.notehub.constants.SPACER_EXTRA_SMALL
+import com.example.notehub.utils.DimensCalculator
 import com.example.notehub.utils.MarkdownUtils
 
 data class EditPanelButton(
@@ -56,15 +66,52 @@ fun EditPanel(
                 }
             }
             item {
-                SelectableButton(
-                    icon = R.drawable.ic_edit,
-                    selected = false,
-                    size = ICON_MEDIUM_PLUS
-                ) {
-
-                }
+                FontSizeButton(onItemClick = {headerNum ->
+                    onTextChange(MarkdownUtils.makeHeader(textFieldValue, headerNum))
+                })
             }
         }
+    }
+}
+
+@Composable
+fun FontSizeButton(
+    onItemClick: (Int) -> Unit
+){
+    DropdownButton(
+        item = {
+            Icon(painter = painterResource(
+                id = R.drawable.ic_font_size),
+                tint = MaterialTheme.colorScheme.primary,
+                contentDescription = null,
+                modifier = Modifier.height(DimensCalculator.calculateIconSize(ICON_MEDIUM_PLUS))
+            )
+        }
+    ) {
+        DropdownMenuItem(
+            text = { Text(LABEL_NONE) },
+            onClick = {
+                onItemClick(0)
+            }
+        )
+        DropdownMenuItem(
+            text = { Text(LABEL_HEADER1) },
+            onClick = {
+                onItemClick(1)
+            }
+        )
+        DropdownMenuItem(
+            text = { Text(LABEL_HEADER2) },
+            onClick = {
+                onItemClick(2)
+            }
+        )
+        DropdownMenuItem(
+            text = { Text(LABEL_HEADER3) },
+            onClick = {
+                onItemClick(3)
+            }
+        )
     }
 }
 
@@ -93,6 +140,6 @@ val EDIT_PANEL_BUTTONS = listOf(
         icon = R.drawable.ic_marked_list,
         onClick = { value, _ -> MarkdownUtils.makeMarkedList(value) },
         selected = { false }
-    )
+    ),
 )
 
