@@ -179,6 +179,24 @@ object MarkdownUtils {
         return TextFieldValue(newText, newSelection)
     }
 
+    fun setImage(value: TextFieldValue, url: String): TextFieldValue {
+        val text = value.text
+        val selection = value.selection
+        val selectedText = if (selection.collapsed) {
+            "link"
+        } else {
+            text.substring(selection.start, selection.end)
+        }
+
+        val linkText = "![$selectedText]($url)"
+        val newText = StringBuilder(text)
+            .replace(selection.start, selection.end, linkText)
+            .toString()
+        val newSelection = TextRange(selection.start + linkText.length)
+
+        return TextFieldValue(newText, newSelection)
+    }
+
     /**
      * Removes bold formatting from the selected text within the provided TextFieldValue.
      *

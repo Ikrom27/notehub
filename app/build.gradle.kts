@@ -58,6 +58,7 @@ dependencies {
     implementation(libs.firebase.storage.ktx)
     //UI
     implementation(libs.composedatepicker)
+    implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
     //google auth
     implementation(libs.bundles.google.credentials)
     //DataStore

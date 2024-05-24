@@ -10,10 +10,13 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,6 +34,7 @@ import com.example.notehub.constants.LABEL_HEADER2
 import com.example.notehub.constants.LABEL_HEADER3
 import com.example.notehub.constants.LABEL_NONE
 import com.example.notehub.constants.SPACER_EXTRA_SMALL
+import com.example.notehub.ui.dialogs.PhotoGalleryBottomSheetContent
 import com.example.notehub.utils.DimensCalculator
 import com.example.notehub.utils.MarkdownUtils
 
@@ -40,6 +44,7 @@ data class EditPanelButton(
     val selected: (TextFieldValue) -> Boolean
 )
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditPanel(
     modifier: Modifier = Modifier,
@@ -49,6 +54,8 @@ fun EditPanel(
     var showLinkDialog by remember {
         mutableStateOf(false)
     }
+    var showBottomSheet by remember { mutableStateOf(false) }
+    val sheetState = rememberModalBottomSheetState()
 
     Column(
         modifier = modifier
@@ -85,7 +92,28 @@ fun EditPanel(
                 FontSizeButton(onItemClick = {headerNum ->
                     onTextChange(MarkdownUtils.makeHeader(textFieldValue, headerNum))
                 })
+                IconButton(onClick = { showBottomSheet = true}) {
+                    Icon(painter = painterResource(
+                        id = R.drawable.ic_image),
+                        tint = MaterialTheme.colorScheme.primary,
+                        contentDescription = null,
+                        modifier = Modifier.height(DimensCalculator.calculateIconSize(ICON_MEDIUM_PLUS))
+                    )
+                }
             }
+        }
+    }
+    if (showBottomSheet) {
+        ModalBottomSheet(
+            sheetState = sheetState,
+            onDismissRequest = {
+                showBottomSheet = false
+            },
+        ) {
+            PhotoGalleryBottomSheetContent(onPhotoClicked = {imageUrl ->
+                onTextChange(MarkdownUtils.setImage(textFieldValue, imageUrl))
+                showBottomSheet = false
+            })
         }
     }
     if (showLinkDialog){
