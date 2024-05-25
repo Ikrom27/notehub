@@ -1,6 +1,5 @@
 package com.example.notehub.utils
 
-import android.content.Context
 import android.os.Environment
 import android.util.Log
 import com.example.notehub.constants.FOLDER_FAVORITE
@@ -17,7 +16,7 @@ object FileUtils {
     /**
      * generate default folders: Main, Favorite, Template, Trash
      */
-    fun generateDirectories(context: Context) {
+    fun generateDirectories() {
         createDirectory(ROOT_PATH, "")
         createDirectory(ROOT_PATH, FOLDER_FAVORITE)
         createDirectory(ROOT_PATH, FOLDER_TEMPLATE)
