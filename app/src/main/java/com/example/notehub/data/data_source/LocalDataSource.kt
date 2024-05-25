@@ -8,6 +8,7 @@ import com.example.notehub.utils.FileUtils
 import com.example.notehub.utils.addPath
 import java.io.File
 import java.io.IOException
+import java.nio.file.Path
 
 /**
  * A class responsible for providing access to local files and directories.
@@ -15,6 +16,11 @@ import java.io.IOException
  * @property ROOT_PATH The root path for the local file system.
  */
 class LocalDataSource {
+
+    fun searchFileInFolder(dir: String){
+        getFilesList(dir)
+    }
+
 
     /**
      * Retrieves a list of files within the specified directory path.

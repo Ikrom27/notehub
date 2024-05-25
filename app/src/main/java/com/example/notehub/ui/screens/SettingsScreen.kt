@@ -42,6 +42,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.notehub.R
 import com.example.notehub.constants.AUTHENTICATION
 import com.example.notehub.constants.AUTHORS
 import com.example.notehub.constants.ENTER_ARRAY
@@ -203,7 +204,7 @@ fun Authorization(onLoginClick: () -> Unit) {
                     .padding(start = 12.dp)
             )
             Icon(
-                painter = painterResource(id = ENTER_ARRAY),
+                painter = painterResource(id = R.drawable.google_logo),
                 tint = MaterialTheme.colorScheme.primary,
                 contentDescription = null,
                 modifier = Modifier
@@ -237,7 +238,7 @@ fun ThemeSwitchBar(
                 .padding(start = 12.dp)
         )
         Icon(
-            painter = painterResource(id = ENTER_ARRAY),
+            painter = painterResource(id = R.drawable.moon),
             tint = MaterialTheme.colorScheme.primary,
             contentDescription = null,
             modifier = Modifier.size(24.dp)

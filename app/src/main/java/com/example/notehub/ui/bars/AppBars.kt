@@ -2,6 +2,7 @@ package com.example.notehub.ui.bars
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -98,14 +99,17 @@ fun EditorBar(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomTopAppBar() {
+fun CustomTopAppBar(
+    title: String,
+    isTrashScreen: Boolean,
+    onSettingsClick: ()->Unit) {
     var searchText by rememberSaveable { mutableStateOf("") }
     val borderColor = MaterialTheme.colorScheme.background.copy(alpha = 0.0f)
     MediumTopAppBar(
         actions = {
             IconButton(
                 onClick = {
-                    // действие на кнопку настроек
+                    onSettingsClick()
                 }) {
                 Icon(
                     Icons.Filled.Settings,
@@ -114,26 +118,40 @@ fun CustomTopAppBar() {
             }
         },
         title = {
-            TextField(
-                value = searchText,
-                onValueChange = { searchText = it },
-                modifier = Modifier
-                .fillMaxWidth()
-                .padding(end = 20.dp)
-                ,
-                leadingIcon = { Icon(Icons.Filled.Search, contentDescription = "leadingIcon") },
-                shape = RoundedCornerShape(27.dp),
-                placeholder = { Text("Поиск") },
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-                keyboardActions = KeyboardActions(onSearch = {
+            Column {
+                Row {
+                    Text(
+                        text = title,
+                        fontSize = NOTE_TITLE_SIZE,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    if (isTrashScreen){
+                        Icon(painter = painterResource(id = R.drawable.ic_trash),
+                            contentDescription = "TrashScreen")
+                    }
+                }
+                TextField(
+                    value = searchText,
+                    onValueChange = { searchText = it },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 20.dp),
+                    leadingIcon = { Icon(painterResource(id = R.drawable.ic_search),
+                        contentDescription = "leadingIcon") },
+                    shape = RoundedCornerShape(27.dp),
+                    placeholder = { Text("Поиск") },
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+                    keyboardActions = KeyboardActions(onSearch = {
 
-                }),
-                colors = TextFieldDefaults.colors(
-                    focusedIndicatorColor = borderColor,
-                    unfocusedIndicatorColor = borderColor,
+                    }),
+                    colors = TextFieldDefaults.colors(
+                        focusedIndicatorColor = borderColor,
+                        unfocusedIndicatorColor = borderColor,
+                    )
                 )
-            )
+            }
         }
     )
 
