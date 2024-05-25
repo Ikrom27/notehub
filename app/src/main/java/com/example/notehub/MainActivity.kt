@@ -52,7 +52,7 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-        FileUtils.generateDirectories()
+        FileUtils.generateDirectories(this)
     }
 
     companion object {

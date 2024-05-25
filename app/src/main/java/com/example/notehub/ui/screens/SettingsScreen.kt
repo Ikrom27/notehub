@@ -31,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -43,12 +44,9 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.notehub.R
-import com.example.notehub.constants.AUTHENTICATION
-import com.example.notehub.constants.AUTHORS
 import com.example.notehub.constants.ENTER_ARRAY
 import com.example.notehub.constants.FILE_ITEM_HEIGHT
 import com.example.notehub.constants.FILE_ITEM_RADIUS
-import com.example.notehub.constants.SWITCH_THEME
 import com.example.notehub.viewmodels.SettingsViewModel
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
@@ -85,10 +83,12 @@ fun SettingsScreen(
         )
         //if (isLoggedIn.value) {
         if (FirebaseAuth.getInstance().currentUser != null) {
-            Text(text = "ТЫ блИн хорош, вошел в Приложуху через гуГлЧанСкий!!1!",
+            Text(
+                text = stringResource(id = R.string.AUTHENTICATED),
                 color = MaterialTheme.colorScheme.primary,
                 fontSize = 20.sp,
-                fontWeight = FontWeight(600),)
+                fontWeight = FontWeight(600),
+            )
             FirebaseAuth.getInstance().currentUser?.uid?.let { uid ->
                 //viewModel.uploadToStorage(uid)
                 viewModel.downloadFromStorage(uid)
@@ -105,7 +105,7 @@ fun SettingsScreen(
             })
         }
         Text(
-            text = AUTHORS,
+            text = stringResource(id = R.string.AUTHORS),
             fontSize = 20.sp,
             fontWeight = FontWeight(600),
             color = MaterialTheme.colorScheme.primary
@@ -157,24 +157,24 @@ fun setSignIn(context: Context, coroutineScope: CoroutineScope) {
             val googleIdTokenCredential = GoogleIdTokenCredential
                 .createFrom(credential.data)
             val googleIdToken = googleIdTokenCredential.idToken
-            Log.i("EBANIY GOOGLE", googleIdToken)
-            Toast.makeText(context, "You are signed in!", Toast.LENGTH_SHORT).show()
+            Log.i("testoviy GOOGLE", googleIdToken)
+            Toast.makeText(context, R.string.AUTHENTICATED, Toast.LENGTH_SHORT).show()
 
             val firebaseCredential = GoogleAuthProvider.getCredential(googleIdToken, null)
             FirebaseAuth.getInstance().signInWithCredential(firebaseCredential)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         Log.i("FirebaseAuth", "signInWithCredential:success")
-                        Toast.makeText(context, "You are signed in!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, R.string.AUTHENTICATED, Toast.LENGTH_SHORT).show()
                     } else {
                         Log.e("FirebaseAuth", "signInWithCredential:failure", task.exception)
-                        Toast.makeText(context, "Failed to sign in!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, R.string.authentication_fail, Toast.LENGTH_SHORT).show()
                     }
                 }
             setLoggedIn(context, true)
         } catch (e: Exception) {
             Log.e("LoginError", "Failed to log in", e)
-            Toast.makeText(context, "Failed to sign in!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.authentication_fail, Toast.LENGTH_SHORT).show()
         }
     }
 }
@@ -195,7 +195,7 @@ fun Authorization(onLoginClick: () -> Unit) {
                 .clickable { onLoginClick() }
         ) {
             Text(
-                text = AUTHENTICATION,
+                text = stringResource(id = R.string.AUTHENTICATION),
                 fontSize = 20.sp,
                 fontWeight = FontWeight(600),
                 color = MaterialTheme.colorScheme.primary,
@@ -229,7 +229,7 @@ fun ThemeSwitchBar(
             .background(MaterialTheme.colorScheme.surface)
     ) {
         Text(
-            text = SWITCH_THEME,
+            text = stringResource(id = R.string.SWITCH_THEME),
             fontSize = 20.sp,
             fontWeight = FontWeight(600),
             color = MaterialTheme.colorScheme.primary,

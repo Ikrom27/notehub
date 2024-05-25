@@ -14,15 +14,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.notehub.R
 import com.example.notehub.constants.FOLDER_FAVORITE
-import com.example.notehub.constants.LABEL_ADD_TO_FAVORITE
-import com.example.notehub.constants.LABEL_DELETE
-import com.example.notehub.constants.LABEL_MOVE
-import com.example.notehub.constants.LABEL_RENAME
-import com.example.notehub.constants.LABEL_SET_REMINDER
 import com.example.notehub.constants.MAIN_HORIZONTAL_PADDING
 import com.example.notehub.constants.NOTE_ITEM_WIDTH
 import com.example.notehub.extansions.getNameWithoutExtension
@@ -105,7 +101,7 @@ fun NotesList(
                 },
                 dropDownItems = {hideMenu ->
                     DropdownMenuItem(
-                        text = { Text(LABEL_RENAME) },
+                        text = { Text(stringResource(id = R.string.LABEL_RENAME)) },
                         onClick = {
                             showRenameDialog = true
                             updateList()
@@ -113,7 +109,7 @@ fun NotesList(
                         }
                     )
                     DropdownMenuItem(
-                        text = { Text(LABEL_DELETE) },
+                        text = { Text(stringResource(id = R.string.LABEL_DELETE)) },
                         onClick = {
                             FileUtils.moveToTrash(FileUtils.ROOT_PATH.addPath(dirName), note.name)
                             updateList()
@@ -121,7 +117,7 @@ fun NotesList(
                         }
                     )
                     DropdownMenuItem(
-                        text = { Text(LABEL_SET_REMINDER) },
+                        text = { Text(stringResource(id = R.string.LABEL_SET_REMINDER)) },
                         onClick = {
                             //TODO: Set reminder
                             updateList()
@@ -129,7 +125,7 @@ fun NotesList(
                         }
                     )
                     DropdownMenuItem(
-                        text = { Text(LABEL_MOVE) },
+                        text = { Text(stringResource(id = R.string.LABEL_MOVE)) },
                         onClick = {
                             //TODO: make move
                             updateList()
@@ -137,7 +133,7 @@ fun NotesList(
                         }
                     )
                     DropdownMenuItem(
-                        text = { Text(LABEL_ADD_TO_FAVORITE) },
+                        text = { Text(stringResource(id = R.string.LABEL_ADD_TO_FAVORITE)) },
                         onClick = {
                             FileUtils.moveFile(
                                 FileUtils.ROOT_PATH.addPath(dirName),

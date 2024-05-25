@@ -15,17 +15,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.notehub.R
 import com.example.notehub.constants.FILE_ITEMS_BETWEEN_PADDING
-import com.example.notehub.constants.LABEL_DELETE
-import com.example.notehub.constants.LABEL_RENAME
 import com.example.notehub.constants.MAIN_HORIZONTAL_PADDING
 import com.example.notehub.constants.TITLE_SIZE
 import com.example.notehub.constants.TITLE_WEIGHT
-import com.example.notehub.constants.YOUR_FOLDER
 import com.example.notehub.ui.components.AddIcon
 import com.example.notehub.ui.components.FolderItem
 import com.example.notehub.ui.components.SetNameDialog
@@ -53,7 +52,7 @@ fun MainScreen(
         onAddClick = {showCreateFolderDialog = true},
         menuItems = {file, hideMenu ->
             DropdownMenuItem(
-                text = {  Text(LABEL_DELETE) },
+                text = {  Text(stringResource(id = R.string.LABEL_DELETE)) },
                 onClick = {
                     FileUtils.moveToTrash(currentPath, file.name)
                     viewModel.updateFilesList(currentPath)
@@ -61,7 +60,7 @@ fun MainScreen(
                 }
             )
             DropdownMenuItem(
-                text = { Text(LABEL_RENAME) },
+                text = { Text(stringResource(id = R.string.LABEL_RENAME)) },
                 onClick = {
                     showRenameDialog = true
                     viewModel.updateFilesList(currentPath)
@@ -116,7 +115,7 @@ fun FoldersList(
         }
         item {
             Text(
-                text = YOUR_FOLDER,
+                text = stringResource(id = R.string.YOUR_FOLDER),
                 color = MaterialTheme.colorScheme.primary,
                 fontSize = TITLE_SIZE,
                 fontWeight = FontWeight(TITLE_WEIGHT),
