@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -38,6 +37,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.notehub.R
 import com.example.notehub.constants.ADD_ICON_TOP_PADDING
 import com.example.notehub.constants.ENTER_ARRAY
 import com.example.notehub.constants.FILE_ITEMS_BETWEEN_PADDING
@@ -45,9 +45,8 @@ import com.example.notehub.constants.FILE_ITEM_HEIGHT
 import com.example.notehub.constants.FILE_ITEM_RADIUS
 import com.example.notehub.constants.ICON_LARGE
 import com.example.notehub.constants.NOTE_ITEM_HEIGHT
-import com.example.notehub.constants.NOTE_ITEM_RADIUS
-import com.example.notehub.constants.NOTE_ITEM_WIDTH
 import com.example.notehub.constants.NOTE_ITEM_HORIZONTAL_PADDING
+import com.example.notehub.constants.NOTE_ITEM_WIDTH
 import com.example.notehub.utils.DimensCalculator
 
 
@@ -92,7 +91,10 @@ fun FolderItem(
 @Composable
 fun AddIcon(onClick: () -> Unit){
     Box(
-        modifier = Modifier.fillMaxWidth().wrapContentHeight().padding(top = ADD_ICON_TOP_PADDING - FILE_ITEMS_BETWEEN_PADDING),
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .padding(top = ADD_ICON_TOP_PADDING - FILE_ITEMS_BETWEEN_PADDING),
         contentAlignment = Alignment.Center
     ) {
         IconButton(
@@ -101,7 +103,7 @@ fun AddIcon(onClick: () -> Unit){
                 .background(color = MaterialTheme.colorScheme.primary, shape = CircleShape),
             onClick = { onClick() }
         ) {
-            /* TODO: add icon */
+            Icon(painter = painterResource(id = R.drawable.ic_plus), contentDescription ="plus" )
         }
     }
 }
@@ -124,7 +126,9 @@ fun NoteItem(title: String,
             fontSize = 20.sp,
             fontWeight = FontWeight(600),
             color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = NOTE_ITEM_HORIZONTAL_PADDING, vertical = 12.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = NOTE_ITEM_HORIZONTAL_PADDING, vertical = 12.dp)
         )
 
         Text(
@@ -133,7 +137,9 @@ fun NoteItem(title: String,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             maxLines = 5,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 6.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 6.dp)
         )
     }
 }
@@ -149,7 +155,7 @@ fun WithMenuItem(
     val context = LocalContext.current
     val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
-    Card(
+    Box(
         modifier = Modifier
             .pointerInput(true) {
                 detectTapGestures(
