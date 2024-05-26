@@ -18,7 +18,8 @@
     <string name="AUTHENTICATION">Войти с помощью GOOGLE</string>
     <string name="AUTHENTICATED">Вы вошли c помощью GOOGLE</string>
     <string name="authentication_fail">Ошибка при входе!</string>
-    <string name="FOLDER_FAVORITE">.Избранное</string>
-    <string name="FOLDER_TEMPLATE">.Шаблоны</string>
-    <string name="FOLDER_TRASH">.Мусорка</string>
+    <string name="FOLDER_FAVORITE">Избранное</string>
+    <string name="FOLDER_TEMPLATE">Шаблоны</string>
+    <string name="FOLDER_TRASH">Мусорка</string>
+    <string name="settings">Настройки</string>
 </resources>

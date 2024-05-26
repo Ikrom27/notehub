@@ -15,13 +15,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.getString
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.notehub.R
 import com.example.notehub.constants.FILE_ITEMS_BETWEEN_PADDING
+import com.example.notehub.constants.FOLDER_FAVORITE
+import com.example.notehub.constants.FOLDER_TEMPLATE
+import com.example.notehub.constants.FOLDER_TRASH
 import com.example.notehub.constants.MAIN_HORIZONTAL_PADDING
 import com.example.notehub.constants.TITLE_SIZE
 import com.example.notehub.constants.TITLE_WEIGHT
@@ -101,17 +106,23 @@ fun FoldersList(
 ){
     val defaultDirectories by viewModel.defaultFolders.collectAsState()
     val directories by viewModel.fileList.collectAsState()
-
+    val context = LocalContext.current
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(FILE_ITEMS_BETWEEN_PADDING),
         modifier = Modifier.padding(horizontal = MAIN_HORIZONTAL_PADDING)
     ) {
         items(items = defaultDirectories) {file ->
-            FolderItem(
-                title = file.name.substring(1),
-                counter = 0,
-                modifier = Modifier.clickable { onItemClick(file) }
-            )
+            var name = file.name
+            when (name){
+                FOLDER_TEMPLATE -> name = getString(context, R.string.FOLDER_TEMPLATE)
+                FOLDER_FAVORITE -> name = getString(context, R.string.FOLDER_FAVORITE)
+                FOLDER_TRASH -> name = getString(context, R.string.FOLDER_TRASH)
+            }
+                FolderItem(
+                    title = name,
+                    counter = 0,
+                    modifier = Modifier.clickable { onItemClick(file) }
+                )
         }
         item {
             Text(

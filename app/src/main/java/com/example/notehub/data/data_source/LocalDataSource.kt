@@ -1,14 +1,13 @@
 package com.example.notehub.data.data_source
 
-import android.util.Log
 import com.example.notehub.constants.FOLDER_FAVORITE
 import com.example.notehub.constants.FOLDER_TEMPLATE
 import com.example.notehub.constants.FOLDER_TRASH
+import com.example.notehub.data.data_source.LocalDataSource.Companion.ROOT_PATH
 import com.example.notehub.utils.FileUtils
 import com.example.notehub.utils.addPath
 import java.io.File
 import java.io.IOException
-import java.nio.file.Path
 
 /**
  * A class responsible for providing access to local files and directories.
@@ -16,12 +15,6 @@ import java.nio.file.Path
  * @property ROOT_PATH The root path for the local file system.
  */
 class LocalDataSource {
-
-    fun searchFileInFolder(dir: String){
-        getFilesList(dir)
-    }
-
-
     /**
      * Retrieves a list of files within the specified directory path.
      *

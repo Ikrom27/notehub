@@ -2,6 +2,8 @@ package com.example.notehub.ui.screens
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -14,15 +16,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.notehub.R
 import com.example.notehub.constants.FOLDER_FAVORITE
+import com.example.notehub.constants.FOLDER_TRASH
 import com.example.notehub.constants.MAIN_HORIZONTAL_PADDING
 import com.example.notehub.constants.NOTE_ITEM_WIDTH
 import com.example.notehub.extansions.getNameWithoutExtension
 import com.example.notehub.extansions.readPreview
+import com.example.notehub.ui.bars.NHTopAppBar
 import com.example.notehub.ui.components.FloatingButton
 import com.example.notehub.ui.components.NoteItem
 import com.example.notehub.ui.components.SetNameDialog
@@ -43,9 +48,11 @@ fun NotesScreen(
     viewModel.updateFilesList(dirName)
     val files by viewModel.fileList.collectAsState()
     var showCreateNoteDialog by remember { mutableStateOf(false) }
-
     Scaffold(
-        topBar = {},
+        topBar = { NHTopAppBar(title = dirName,
+            isTrashScreen = dirName == FOLDER_TRASH,
+            onSettingsClick = { navController.navigate("SettingsScreen")},
+            onSearchClick = {})},
         floatingActionButton = {
             FloatingButton(
                 icon = R.drawable.ic_edit,
@@ -55,14 +62,16 @@ fun NotesScreen(
             )
         }
     ) {
-        NotesList(
-            files = files,
-            dirName = dirName,
-            updateList = { viewModel.updateFilesList(dirName) },
-            onItemClick = {
-                navController.navigate("EditorScreen/$dirName/${it.name}")
-            }
-        )
+        Box(modifier = Modifier.padding(it)) {
+            NotesList(
+                files = files,
+                dirName = dirName,
+                updateList = { viewModel.updateFilesList(dirName) },
+                onItemClick = {
+                    navController.navigate("EditorScreen/$dirName/${it.name}")
+                }
+            )
+        }
     }
 
     if (showCreateNoteDialog) {
