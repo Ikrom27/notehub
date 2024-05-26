@@ -71,7 +71,7 @@ fun FolderItem(
             fontSize = 20.sp,
             fontWeight = FontWeight(600),
             color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().padding(start = 12.dp)
         )
         Text(
             text = counter.toString(),
@@ -130,7 +130,6 @@ fun NoteItem(title: String,
                 .fillMaxWidth()
                 .padding(horizontal = NOTE_ITEM_HORIZONTAL_PADDING, vertical = 12.dp)
         )
-
         Text(
             text = noteText,
             fontSize = 14.sp,
@@ -139,7 +138,7 @@ fun NoteItem(title: String,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 6.dp)
+                //.padding(horizontal = NOTE_ITEM_HORIZONTAL_PADDING)
         )
     }
 }

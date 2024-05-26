@@ -19,6 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -26,7 +27,6 @@ import com.example.notehub.R
 import com.example.notehub.constants.FOLDER_FAVORITE
 import com.example.notehub.constants.FOLDER_TEMPLATE
 import com.example.notehub.constants.FOLDER_TRASH
-import com.example.notehub.constants.MAIN_HORIZONTAL_PADDING
 import com.example.notehub.constants.NOTE_ITEM_WIDTH
 import com.example.notehub.extansions.getNameWithoutExtension
 import com.example.notehub.extansions.readPreview
@@ -72,7 +72,7 @@ fun NotesScreen(
             )
         }
     ) {
-        Box(modifier = Modifier.padding(it)) {
+        Box(modifier = Modifier.padding(it).padding(horizontal = 16.dp, vertical = 16.dp)) {
             NotesList(
                 files = files,
                 dirName = dirName,
@@ -105,7 +105,9 @@ fun NotesList(
     var showRenameDialog by remember { mutableStateOf(false) }
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = NOTE_ITEM_WIDTH),
-        horizontalArrangement = Arrangement.spacedBy(MAIN_HORIZONTAL_PADDING),
+        horizontalArrangement = Arrangement.spacedBy(48.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        //modifier = Modifier.padding(horizontal = 6.dp)
         ) {
         items(items = files){note ->
             WithMenuItem(

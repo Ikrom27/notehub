@@ -217,7 +217,7 @@ fun NHTopAppBar(
                     Icons.Filled.Settings,
                     tint = MaterialTheme.colorScheme.primary,
                     contentDescription = null,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(36.dp)
                 )
             }
         }
@@ -263,7 +263,9 @@ fun SettingsTopAppBar() {
             )
         },
         title = {
-            Text(text = stringResource(id = R.string.settings), fontSize = TITLE_SIZE)
+            Text(text = stringResource(id = R.string.settings), fontSize = TITLE_SIZE,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.primary)
         },
         colors = TopAppBarColors(
             actionIconContentColor = MaterialTheme.colorScheme.primary,
