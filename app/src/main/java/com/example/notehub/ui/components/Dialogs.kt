@@ -11,11 +11,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.example.notehub.constants.LABEL_CONFIRM
-import com.example.notehub.constants.LABEL_CREATE_NEW_FOLDER
-import com.example.notehub.constants.LABEL_DISMISS
-import com.example.notehub.constants.LABEL_FOLDER_NAME
-import com.example.notehub.constants.TEXT_INCORRECT_FOLDER_NAME
+import androidx.compose.ui.res.stringResource
+import com.example.notehub.R
 import com.example.notehub.utils.isValidInput
 
 @Composable
@@ -27,12 +24,12 @@ fun SetNameDialog(
     var userInput by remember { mutableStateOf(defaultName) }
     AlertDialog(
         title = {
-            Text(text = LABEL_CREATE_NEW_FOLDER)
+            Text(text = stringResource(id = R.string.LABEL_CREATE_NEW_FOLDER))
         },
         text = {
             Column {
                 OutlinedTextField(
-                    label = { Text(text = LABEL_FOLDER_NAME) },
+                    label = { Text(text = stringResource(id = R.string.LABEL_FOLDER_NAME)) },
                     value = userInput,
                     onValueChange = { userInput = it },
                     singleLine = true
@@ -50,7 +47,7 @@ fun SetNameDialog(
                     userInput = ""
                 }
             ) {
-                Text(LABEL_DISMISS)
+                Text(stringResource(id = R.string.LABEL_DISMISS))
             }
         },
         confirmButton = {
@@ -61,7 +58,7 @@ fun SetNameDialog(
                     onDismissRequest()
                 }
             ) {
-                Text(LABEL_CONFIRM)
+                Text(stringResource(id = R.string.LABEL_CONFIRM))
             }
         },
     )

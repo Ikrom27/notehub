@@ -1,9 +1,9 @@
 package com.example.notehub.data.data_source
 
-import android.util.Log
 import com.example.notehub.constants.FOLDER_FAVORITE
 import com.example.notehub.constants.FOLDER_TEMPLATE
 import com.example.notehub.constants.FOLDER_TRASH
+import com.example.notehub.data.data_source.LocalDataSource.Companion.ROOT_PATH
 import com.example.notehub.utils.FileUtils
 import com.example.notehub.utils.addPath
 import java.io.File
@@ -15,7 +15,6 @@ import java.io.IOException
  * @property ROOT_PATH The root path for the local file system.
  */
 class LocalDataSource {
-
     /**
      * Retrieves a list of files within the specified directory path.
      *

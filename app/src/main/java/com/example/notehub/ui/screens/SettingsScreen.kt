@@ -8,6 +8,7 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -42,12 +45,13 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.notehub.constants.AUTHENTICATION
-import com.example.notehub.constants.AUTHORS
+import com.example.notehub.R
 import com.example.notehub.constants.ENTER_ARRAY
+import com.example.notehub.constants.FILE_ITEMS_BETWEEN_PADDING
 import com.example.notehub.constants.FILE_ITEM_HEIGHT
 import com.example.notehub.constants.FILE_ITEM_RADIUS
-import com.example.notehub.constants.SWITCH_THEME
+import com.example.notehub.constants.MAIN_HORIZONTAL_PADDING
+import com.example.notehub.ui.bars.SettingsTopAppBar
 import com.example.notehub.viewmodels.SettingsViewModel
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
@@ -73,42 +77,49 @@ fun SettingsScreen(
     LaunchedEffect(key1 = Unit) {
         isLoggedIn.value = isLoggedIn(context)
     }
-
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(top = 58.dp)
-    ) {
-        ThemeSwitchBar(
-            isDarkTheme = isDarkTheme,
-            onThemeSwitched = { isChecked -> isDarkTheme = isChecked }
-        )
-        //if (isLoggedIn.value) {
-        if (FirebaseAuth.getInstance().currentUser != null) {
-            Text(text = "ТЫ блИн хорош, вошел в Приложуху через гуГлЧанСкий!!1!",
-                color = MaterialTheme.colorScheme.primary,
-                fontSize = 20.sp,
-                fontWeight = FontWeight(600),)
-            FirebaseAuth.getInstance().currentUser?.uid?.let { uid ->
-                //viewModel.uploadToStorage(uid)
-                viewModel.downloadFromStorage(uid)
-            }
-        } else {
-            Authorization(onLoginClick = {
-                coroutineScope.launch {
-                    setSignIn(context, coroutineScope)
-                    isLoggedIn.value = isLoggedIn(context)
+    Scaffold(topBar = { SettingsTopAppBar() })
+    {
+        Box(modifier = Modifier.padding(it)) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(FILE_ITEMS_BETWEEN_PADDING),
+                modifier = Modifier.padding(horizontal = MAIN_HORIZONTAL_PADDING)
+            ) {
+                ThemeSwitchBar(
+                    isDarkTheme = isDarkTheme,
+                    onThemeSwitched = { isChecked -> isDarkTheme = isChecked }
+                )
+                //if (isLoggedIn.value) {
+                if (FirebaseAuth.getInstance().currentUser != null) {
+                    Text(
+                        text = stringResource(id = R.string.AUTHENTICATED),
+                        color = MaterialTheme.colorScheme.primary,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight(600),
+                    )
                     FirebaseAuth.getInstance().currentUser?.uid?.let { uid ->
-                        viewModel.uploadToStorage(uid)
+                        //viewModel.uploadToStorage(uid)
+                        viewModel.downloadFromStorage(uid)
                     }
+                } else {
+                    Authorization(onLoginClick = {
+                        coroutineScope.launch {
+                            setSignIn(context, coroutineScope)
+                            isLoggedIn.value = isLoggedIn(context)
+                            FirebaseAuth.getInstance().currentUser?.uid?.let { uid ->
+                                viewModel.uploadToStorage(uid)
+                            }
+                        }
+                    })
                 }
-            })
+                Text(
+                    text = stringResource(id = R.string.AUTHORS),
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight(600),
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
         }
-        Text(
-            text = AUTHORS,
-            fontSize = 20.sp,
-            fontWeight = FontWeight(600),
-            color = MaterialTheme.colorScheme.primary
-        )
     }
 }
 
@@ -156,24 +167,24 @@ fun setSignIn(context: Context, coroutineScope: CoroutineScope) {
             val googleIdTokenCredential = GoogleIdTokenCredential
                 .createFrom(credential.data)
             val googleIdToken = googleIdTokenCredential.idToken
-            Log.i("EBANIY GOOGLE", googleIdToken)
-            Toast.makeText(context, "You are signed in!", Toast.LENGTH_SHORT).show()
+            Log.i("testoviy GOOGLE", googleIdToken)
+            Toast.makeText(context, R.string.AUTHENTICATED, Toast.LENGTH_SHORT).show()
 
             val firebaseCredential = GoogleAuthProvider.getCredential(googleIdToken, null)
             FirebaseAuth.getInstance().signInWithCredential(firebaseCredential)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         Log.i("FirebaseAuth", "signInWithCredential:success")
-                        Toast.makeText(context, "You are signed in!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, R.string.AUTHENTICATED, Toast.LENGTH_SHORT).show()
                     } else {
                         Log.e("FirebaseAuth", "signInWithCredential:failure", task.exception)
-                        Toast.makeText(context, "Failed to sign in!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, R.string.authentication_fail, Toast.LENGTH_SHORT).show()
                     }
                 }
             setLoggedIn(context, true)
         } catch (e: Exception) {
             Log.e("LoginError", "Failed to log in", e)
-            Toast.makeText(context, "Failed to sign in!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.authentication_fail, Toast.LENGTH_SHORT).show()
         }
     }
 }
@@ -194,7 +205,7 @@ fun Authorization(onLoginClick: () -> Unit) {
                 .clickable { onLoginClick() }
         ) {
             Text(
-                text = AUTHENTICATION,
+                text = stringResource(id = R.string.AUTHENTICATION),
                 fontSize = 20.sp,
                 fontWeight = FontWeight(600),
                 color = MaterialTheme.colorScheme.primary,
@@ -203,7 +214,7 @@ fun Authorization(onLoginClick: () -> Unit) {
                     .padding(start = 12.dp)
             )
             Icon(
-                painter = painterResource(id = ENTER_ARRAY),
+                painter = painterResource(id = R.drawable.google_logo),
                 tint = MaterialTheme.colorScheme.primary,
                 contentDescription = null,
                 modifier = Modifier
@@ -228,7 +239,7 @@ fun ThemeSwitchBar(
             .background(MaterialTheme.colorScheme.surface)
     ) {
         Text(
-            text = SWITCH_THEME,
+            text = stringResource(id = R.string.SWITCH_THEME),
             fontSize = 20.sp,
             fontWeight = FontWeight(600),
             color = MaterialTheme.colorScheme.primary,
@@ -237,7 +248,7 @@ fun ThemeSwitchBar(
                 .padding(start = 12.dp)
         )
         Icon(
-            painter = painterResource(id = ENTER_ARRAY),
+            painter = painterResource(id = R.drawable.moon),
             tint = MaterialTheme.colorScheme.primary,
             contentDescription = null,
             modifier = Modifier.size(24.dp)

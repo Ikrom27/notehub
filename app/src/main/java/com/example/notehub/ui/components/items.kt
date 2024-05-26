@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -39,7 +38,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.PopupProperties
+import com.example.notehub.R
 import com.example.notehub.constants.ADD_ICON_TOP_PADDING
 import com.example.notehub.constants.ENTER_ARRAY
 import com.example.notehub.constants.FILE_ITEMS_BETWEEN_PADDING
@@ -47,9 +46,8 @@ import com.example.notehub.constants.FILE_ITEM_HEIGHT
 import com.example.notehub.constants.FILE_ITEM_RADIUS
 import com.example.notehub.constants.ICON_LARGE
 import com.example.notehub.constants.NOTE_ITEM_HEIGHT
-import com.example.notehub.constants.NOTE_ITEM_RADIUS
-import com.example.notehub.constants.NOTE_ITEM_WIDTH
 import com.example.notehub.constants.NOTE_ITEM_HORIZONTAL_PADDING
+import com.example.notehub.constants.NOTE_ITEM_WIDTH
 import com.example.notehub.utils.DimensCalculator
 
 
@@ -74,7 +72,7 @@ fun FolderItem(
             fontSize = 20.sp,
             fontWeight = FontWeight(600),
             color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().padding(start = 12.dp)
         )
         Text(
             text = counter.toString(),
@@ -106,7 +104,7 @@ fun AddIcon(onClick: () -> Unit){
                 .background(color = MaterialTheme.colorScheme.primary, shape = CircleShape),
             onClick = { onClick() }
         ) {
-            /* TODO: add icon */
+            Icon(painter = painterResource(id = R.drawable.ic_plus), contentDescription ="plus" )
         }
     }
 }
@@ -142,7 +140,7 @@ fun NoteItem(title: String,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 6.dp)
+                //.padding(horizontal = NOTE_ITEM_HORIZONTAL_PADDING)
         )
     }
 }
@@ -158,7 +156,7 @@ fun WithMenuItem(
     val context = LocalContext.current
     val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
-    Card(
+    Box(
         modifier = Modifier
             .pointerInput(true) {
                 detectTapGestures(
@@ -206,4 +204,5 @@ fun DropdownButton(
         }
     }
 }
+
 

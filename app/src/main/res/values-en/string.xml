@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NoteHub</string>
+    <string name="LABEL_CREATE_NEW_FOLDER">Create new folder</string>
+    <string name="LABEL_FOLDER_NAME">Folder name</string>
+    <string name="YOUR_FOLDER">Your folders</string>
+    <string name="LABEL_CONFIRM">Confirm</string>
+    <string name="LABEL_DISMISS">Dismiss</string>
+    <string name="LABEL_DELETE">Delete</string>
+    <string name="LABEL_RENAME">Rename</string>
+    <string name="LABEL_SET_REMINDER">Set a reminder</string>
+    <string name="LABEL_MOVE">Move</string>
+    <string name="LABEL_ADD_TO_FAVORITE">Add to favorite</string>
+    <string name="TEXT_INCORRECT_FOLDER_NAME">Incorrect folder name!</string>
+    <string name="SWITCH_THEME">Theme</string>
+    <string name="AUTHORS">Authors:\nСавицкий Антон\nХасанбаев Икромжон
+        \nСемёнов Владимир\nСтасюк Дмитрий</string>
+    <string name="AUTHENTICATION">Sign in with GOOGLE</string>
+    <string name="AUTHENTICATED">You are signed in!)</string>
+    <string name="authentication_fail">Failed to sign in!</string>
+    <string name="FOLDER_FAVORITE">Favorite</string>
+    <string name="FOLDER_TEMPLATE">Template</string>
+    <string name="FOLDER_TRASH">Trash</string>
+    <string name="settings">Settings</string>
+</resources>

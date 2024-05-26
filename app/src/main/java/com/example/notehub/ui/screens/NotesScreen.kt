@@ -2,6 +2,8 @@ package com.example.notehub.ui.screens
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -19,19 +21,21 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.notehub.R
 import com.example.notehub.constants.FOLDER_FAVORITE
-import com.example.notehub.constants.LABEL_ADD_TO_FAVORITE
-import com.example.notehub.constants.LABEL_DELETE
-import com.example.notehub.constants.LABEL_MOVE
-import com.example.notehub.constants.LABEL_RENAME
-import com.example.notehub.constants.LABEL_SET_REMINDER
-import com.example.notehub.constants.MAIN_HORIZONTAL_PADDING
+import com.example.notehub.constants.FOLDER_TEMPLATE
+import com.example.notehub.constants.FOLDER_TRASH
 import com.example.notehub.constants.NOTE_ITEM_WIDTH
 import com.example.notehub.extansions.getNameWithoutExtension
 import com.example.notehub.extansions.readPreview
+import com.example.notehub.ui.bars.NHTopAppBar
 import com.example.notehub.ui.components.FloatingButton
 import com.example.notehub.ui.components.NoteItem
 import com.example.notehub.ui.components.SetNameDialog
@@ -54,9 +58,18 @@ fun NotesScreen(
     viewModel.updateFilesList(dirName)
     val files by viewModel.fileList.collectAsState()
     var showCreateNoteDialog by remember { mutableStateOf(false) }
-
+    val context = LocalContext.current
+    var name = dirName
+    when (dirName){
+        FOLDER_TEMPLATE -> name = ContextCompat.getString(context, R.string.FOLDER_TEMPLATE)
+        FOLDER_FAVORITE -> name = ContextCompat.getString(context, R.string.FOLDER_FAVORITE)
+        FOLDER_TRASH -> name = ContextCompat.getString(context, R.string.FOLDER_TRASH)
+    }
     Scaffold(
-        topBar = {},
+        topBar = { NHTopAppBar(title = name,
+            isTrashScreen = dirName == FOLDER_TRASH,
+            onSettingsClick = { navController.navigate("SettingsScreen")},
+            onSearchClick = {})},
         floatingActionButton = {
             FloatingButton(
                 icon = R.drawable.ic_edit,
@@ -66,14 +79,16 @@ fun NotesScreen(
             )
         }
     ) {
-        NotesList(
-            files = files,
-            dirName = dirName,
-            updateList = { viewModel.updateFilesList(dirName) },
-            onItemClick = {
-                navController.navigate("EditorScreen/$dirName/${it.name}")
-            }
-        )
+        Box(modifier = Modifier.padding(it).padding(horizontal = 16.dp, vertical = 16.dp)) {
+            NotesList(
+                files = files,
+                dirName = dirName,
+                updateList = { viewModel.updateFilesList(dirName) },
+                onItemClick = {
+                    navController.navigate("EditorScreen/$dirName/${it.name}")
+                }
+            )
+        }
     }
 
     if (showCreateNoteDialog) {
@@ -102,7 +117,9 @@ fun NotesList(
 
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = NOTE_ITEM_WIDTH),
-        horizontalArrangement = Arrangement.spacedBy(MAIN_HORIZONTAL_PADDING),
+        horizontalArrangement = Arrangement.spacedBy(48.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        //modifier = Modifier.padding(horizontal = 6.dp)
         ) {
         items(items = files){note ->
             WithMenuItem(
@@ -117,7 +134,7 @@ fun NotesList(
                 },
                 dropDownItems = {hideMenu ->
                     DropdownMenuItem(
-                        text = { Text(LABEL_RENAME) },
+                        text = { Text(stringResource(id = R.string.LABEL_RENAME)) },
                         onClick = {
                             showRenameDialog = true
                             updateList()
@@ -125,7 +142,7 @@ fun NotesList(
                         }
                     )
                     DropdownMenuItem(
-                        text = { Text(LABEL_DELETE) },
+                        text = { Text(stringResource(id = R.string.LABEL_DELETE)) },
                         onClick = {
                             FileUtils.moveToTrash(FileUtils.ROOT_PATH.addPath(dirName), note.name)
                             updateList()
@@ -133,7 +150,7 @@ fun NotesList(
                         }
                     )
                     DropdownMenuItem(
-                        text = { Text(LABEL_SET_REMINDER) },
+                        text = { Text(stringResource(id = R.string.LABEL_SET_REMINDER)) },
                         onClick = {
                             showBottomSheet = true
                             updateList()
@@ -141,7 +158,7 @@ fun NotesList(
                         }
                     )
                     DropdownMenuItem(
-                        text = { Text(LABEL_MOVE) },
+                        text = { Text(stringResource(id = R.string.LABEL_MOVE)) },
                         onClick = {
                             //TODO: make move
                             updateList()
@@ -149,7 +166,7 @@ fun NotesList(
                         }
                     )
                     DropdownMenuItem(
-                        text = { Text(LABEL_ADD_TO_FAVORITE) },
+                        text = { Text(stringResource(id = R.string.LABEL_ADD_TO_FAVORITE)) },
                         onClick = {
                             FileUtils.moveFile(
                                 FileUtils.ROOT_PATH.addPath(dirName),

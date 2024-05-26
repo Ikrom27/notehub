@@ -1,3 +1,25 @@
 <resources>
     <string name="app_name">NoteHub</string>
+
+    <string name="LABEL_CREATE_NEW_FOLDER">Создать новую папку</string>
+    <string name="LABEL_FOLDER_NAME">Имя папки</string>
+    <string name="YOUR_FOLDER">Ваши папки</string>
+    <string name="LABEL_CONFIRM">Подтвердить</string>
+    <string name="LABEL_DISMISS">Отклонить</string>
+    <string name="LABEL_DELETE">Удалить</string>
+    <string name="LABEL_RENAME">Переименовать</string>
+    <string name="LABEL_SET_REMINDER">Установить напоминание</string>
+    <string name="LABEL_MOVE">Перейти</string>
+    <string name="LABEL_ADD_TO_FAVORITE">Добавить в избранное</string>
+    <string name="TEXT_INCORRECT_FOLDER_NAME">Некорректное имя папки</string>
+    <string name="SWITCH_THEME">Тема</string>
+    <string name="AUTHORS">Авторы:\nСавицкий Антон\nХасанбаев Икромжон
+        \nСемёнов Владимир\nСтасюк Дмитрий</string>
+    <string name="AUTHENTICATION">Войти с помощью GOOGLE</string>
+    <string name="AUTHENTICATED">Вы вошли c помощью GOOGLE</string>
+    <string name="authentication_fail">Ошибка при входе!</string>
+    <string name="FOLDER_FAVORITE">Избранное</string>
+    <string name="FOLDER_TEMPLATE">Шаблоны</string>
+    <string name="FOLDER_TRASH">Мусорка</string>
+    <string name="settings">Настройки</string>
 </resources>

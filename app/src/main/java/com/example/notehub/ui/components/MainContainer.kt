@@ -13,7 +13,7 @@ import com.example.notehub.ui.bars.CustomTopAppBar
 @Composable
 fun MainContainer() {
     Scaffold(
-        topBar = { CustomTopAppBar()}
+        topBar = { /*CustomTopAppBar()*/}
     ) {
         innerPadding ->
         val modifier = Modifier.padding(innerPadding)

@@ -16,7 +16,7 @@ object FileUtils {
     /**
      * generate default folders: Main, Favorite, Template, Trash
      */
-    fun generateDirectories(){
+    fun generateDirectories() {
         createDirectory(ROOT_PATH, "")
         createDirectory(ROOT_PATH, FOLDER_FAVORITE)
 //        createDirectory(ROOT_PATH, FOLDER_TEMPLATE)
