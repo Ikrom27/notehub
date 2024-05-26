@@ -225,8 +225,7 @@ fun NHTopAppBar(
             value = searchText,
             onValueChange = { searchText = it },
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(end = 20.dp),
+                .fillMaxWidth(),
             leadingIcon = {
                 Icon(
                     painterResource(id = R.drawable.ic_search),
@@ -244,7 +243,9 @@ fun NHTopAppBar(
             }),
             colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent
+                unfocusedIndicatorColor = Color.Transparent,
+                focusedContainerColor = MaterialTheme.colorScheme.surface,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surface
             )
         )
     }

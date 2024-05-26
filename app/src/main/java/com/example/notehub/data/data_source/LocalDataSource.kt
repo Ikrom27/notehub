@@ -66,7 +66,6 @@ class LocalDataSource {
     fun getDefaultFolders(): List<File>{
         return listOf(
             File(ROOT_PATH +"/${FOLDER_FAVORITE}"),
-            File(ROOT_PATH +"/${FOLDER_TEMPLATE}"),
             File(ROOT_PATH +"/${FOLDER_TRASH}")
         )
     }

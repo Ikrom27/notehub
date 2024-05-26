@@ -38,6 +38,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.PopupProperties
 import com.example.notehub.R
 import com.example.notehub.constants.ADD_ICON_TOP_PADDING
 import com.example.notehub.constants.ENTER_ARRAY
@@ -101,7 +102,8 @@ fun AddIcon(onClick: () -> Unit){
         IconButton(
             modifier = Modifier
                 .size(ICON_LARGE)
-                .background(color = MaterialTheme.colorScheme.primary, shape = CircleShape),
+                .background(color = MaterialTheme.colorScheme.primary, shape = CircleShape)
+                .padding(8.dp),
             onClick = { onClick() }
         ) {
             Icon(painter = painterResource(id = R.drawable.ic_plus), contentDescription ="plus" )
@@ -168,6 +170,7 @@ fun WithMenuItem(
                     }
                 )
             }
+            .fillMaxWidth()
     ) {
         item()
         DropdownMenu(

@@ -116,10 +116,9 @@ fun NotesList(
     var showBottomSheet by remember { mutableStateOf(false) }
 
     LazyVerticalGrid(
-        columns = GridCells.Adaptive(minSize = NOTE_ITEM_WIDTH),
-        horizontalArrangement = Arrangement.spacedBy(48.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        //modifier = Modifier.padding(horizontal = 6.dp)
+        columns = GridCells.Fixed(3),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
         items(items = files){note ->
             WithMenuItem(

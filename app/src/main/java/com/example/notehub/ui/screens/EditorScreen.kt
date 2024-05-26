@@ -92,7 +92,7 @@ fun EditorScreen(
         Scaffold(
             topBar = {
                 EditorBar(
-                    title = fileName,
+                    title = fileName.substring(0, fileName.length-3),
                     isEditMode = isEditableMode,
                     onEditClick = {
                         isEditableMode = !isEditableMode
