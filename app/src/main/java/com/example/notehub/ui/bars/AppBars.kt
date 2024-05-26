@@ -231,7 +231,8 @@ fun NHTopAppBar(
                 Icon(
                     painterResource(id = R.drawable.ic_search),
                     contentDescription = "leadingIcon",
-                    Modifier.size(24.dp)
+                    Modifier.size(24.dp),
+                    tint = MaterialTheme.colorScheme.primary
                 )
             },
             shape = RoundedCornerShape(30.dp),

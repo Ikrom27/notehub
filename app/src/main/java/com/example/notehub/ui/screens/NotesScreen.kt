@@ -17,11 +17,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.notehub.R
 import com.example.notehub.constants.FOLDER_FAVORITE
+import com.example.notehub.constants.FOLDER_TEMPLATE
 import com.example.notehub.constants.FOLDER_TRASH
 import com.example.notehub.constants.MAIN_HORIZONTAL_PADDING
 import com.example.notehub.constants.NOTE_ITEM_WIDTH
@@ -48,8 +51,15 @@ fun NotesScreen(
     viewModel.updateFilesList(dirName)
     val files by viewModel.fileList.collectAsState()
     var showCreateNoteDialog by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+    var name = dirName
+    when (dirName){
+        FOLDER_TEMPLATE -> name = ContextCompat.getString(context, R.string.FOLDER_TEMPLATE)
+        FOLDER_FAVORITE -> name = ContextCompat.getString(context, R.string.FOLDER_FAVORITE)
+        FOLDER_TRASH -> name = ContextCompat.getString(context, R.string.FOLDER_TRASH)
+    }
     Scaffold(
-        topBar = { NHTopAppBar(title = dirName,
+        topBar = { NHTopAppBar(title = name,
             isTrashScreen = dirName == FOLDER_TRASH,
             onSettingsClick = { navController.navigate("SettingsScreen")},
             onSearchClick = {})},
